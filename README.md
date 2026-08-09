@@ -48,5 +48,4 @@ Y luego escanear el código QR con la app Expo Go desde el celular.
 
 ## Notas
 
-- Las fotos de las obras están guardadas dentro del proyecto (carpeta `0-assets/`), no se descargan de internet.
-- Hay un archivo `.gitignore` que evita subir carpetas pesadas e innecesarias (como `node_modules`) al repositorio.
+- Las fotos de las obras están guardadas dentro del proyecto (carpeta `0-assets/`), las descargue y las guarde en el proyecto.
