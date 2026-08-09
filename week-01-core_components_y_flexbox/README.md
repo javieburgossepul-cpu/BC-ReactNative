@@ -1,69 +1,52 @@
 # Semana 01 — Core Components y Flexbox
 
-> **Fase 1 — Fundamentos RN** | Semana 1 de 18 | ⏱️ 8 horas
+**Dominio asignado: Museo**
 
-Bienvenido al bootcamp. En esta primera semana sentamos las bases: aprenderás a construir interfaces móviles con los componentes núcleo de React Native y a dominar Flexbox para posicionar elementos en pantalla. Al finalizar tendrás una app funcional adaptada a tu dominio corriendo en simulador.
+## ¿Qué se aprendi esta semana?
 
-## 🎯 Objetivos de aprendizaje
+- Crear un proyecto en Expo y correrlo en el celular con la app Expo Go
+- Usar los componentes básicos de React Native: vistas, textos, imágenes, listas con scroll y botones
+- Acomodar los elementos en pantalla usando Flexbox (filas, columnas, alineación)
+- Darle estilo a la app manteniendo un tema de color consistente
+- Entender en qué se diferencia React Native de React para páginas web
 
-Al finalizar esta semana, el estudiante será capaz de:
+## Estructura de la carpeta
 
-- [ ] Configurar un proyecto Expo desde cero y ejecutarlo en simulador iOS y Android
-- [ ] Usar los Core Components: `View`, `Text`, `Image`, `ScrollView`, `Pressable` y `TouchableOpacity`
-- [ ] Construir layouts con Flexbox usando `flexDirection`, `justifyContent`, `alignItems` y `flex`
-- [ ] Aplicar estilos con `StyleSheet.create` y gestionar temas de color básicos
-- [ ] Identificar las diferencias clave entre React web y React Native en cuanto a renderizado y estilos
+```
+week-01-core_components_y_flexbox/
+├── 1-teoria/        # Lecturas de la semana
+├── 2-practicas/     # Ejercicios guiados
+└── 3-proyecto/      # App final: Museo
+```
 
-## 📚 Requisitos previos
+## El proyecto: Museo 
 
-- JavaScript moderno (ES2022+): arrow functions, destructuring, spread, optional chaining
-- React: componentes funcionales, props, estado con `useState`, efectos con `useEffect`
-- Node.js 20+ instalado
-- [Expo Go](https://expo.dev/go) instalado en el dispositivo o simulador configurado
+Es una app de una sola pantalla que muestra una colección de obras de arte, como si fuera un catálogo del museo.
 
-## 🗂️ Estructura de la semana
+**Qué hace la app:**
 
-| Carpeta        | Contenido                                        | Tiempo |
-| -------------- | ------------------------------------------------ | ------ |
-| `1-teoria/`    | Conceptos: Expo, Core Components, Flexbox        | 2h     |
-| `2-practicas/` | 2 ejercicios guiados con código a descomentar    | 3h     |
-| `3-proyecto/`  | App de tarjetas adaptada al dominio asignado     | 3h     |
+- Muestra un encabezado con el nombre del museo y cuántas obras hay
+- Lista 4 obras famosas (La Gioconda, La noche estrellada, El grito, Las meninas), cada una con su imagen, nombre, artista, año y sala donde está exhibida
+- Cada obra tiene un botón de estrella para marcarla como favorita
+- Se puede tocar cada tarjeta y hacer scroll para ver todas
 
-## 📝 Contenidos
+**Cómo está armada por dentro:**
 
-### Teoría
+- Los datos de las obras están separados del diseño, para que sea fácil agregar o cambiar obras
+- La tarjeta de cada obra es un componente que se reutiliza 4 veces
+- Los estilos están organizados aparte del código, no mezclados en el mismo lugar
 
-| Archivo | Tema | Descripción |
-| ------- | ---- | ----------- |
-| [01-expo-y-entorno.md](1-teoria/01-expo-y-entorno.md) | Expo y el entorno | Qué es Expo, Expo Go, estructura del proyecto, diferencias con React web |
-| [02-core-components.md](1-teoria/02-core-components.md) | Core Components | View, Text, Image, ScrollView, Pressable, TouchableOpacity, StyleSheet |
-| [03-flexbox-layout.md](1-teoria/03-flexbox-layout.md) | Flexbox en mobile | Ejes, flexDirection, justifyContent, alignItems, flex, casos reales |
+## Cómo correr la app
 
-### Prácticas
+```bash
+cd 3-proyecto/starter
+pnpm install
+pnpm start
+```
 
-| Ejercicio | Tema | Descripción |
-| --------- | ---- | ----------- |
-| [ejercicio-01-core-components](2-practicas/ejercicio-01-core-components/) | Core Components | Construir una tarjeta de perfil usando View, Text e Image |
-| [ejercicio-02-flexbox-layouts](2-practicas/ejercicio-02-flexbox-layouts/) | Flexbox | Replicar 4 layouts clásicos de apps móviles |
+Y luego escanear el código QR con la app Expo Go desde el celular.
 
-### Proyecto
+## Notas
 
-[3-proyecto/README.md](3-proyecto/README.md) — App de tarjetas adaptada al dominio asignado: pantalla principal con lista de tarjetas, cada una muestra los datos básicos del elemento, usando `StyleSheet` y Flexbox.
-
-## ⏱️ Distribución del tiempo (8 horas)
-
-| Actividad | Tiempo | Descripción |
-| --------- | ------ | ----------- |
-| Teoría | 2h | Leer los 3 archivos de teoría y reproducir los ejemplos |
-| Práctica 01 | 1.5h | Ejercicio Core Components — descomentar y verificar paso a paso |
-| Práctica 02 | 1.5h | Ejercicio Flexbox Layouts — descomentar y verificar paso a paso |
-| Proyecto | 3h | Implementar la app de tarjetas en tu dominio asignado |
-
-## 📌 Entregables
-
-- [ ] Proyecto: app corriendo en simulador con al menos 3 tarjetas de tu dominio
-- [ ] Código subido al repositorio del aprendiz
-
-## 🔗 Navegación
-
-← (primera semana) | [Semana 02 — Listas, Inputs y Estilos →](../week-02-listas_inputs_y_estilos/README.md)
+- Las fotos de las obras están guardadas dentro del proyecto (carpeta `0-assets/`), no se descargan de internet.
+- Hay un archivo `.gitignore` que evita subir carpetas pesadas e innecesarias (como `node_modules`) al repositorio.
