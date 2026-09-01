@@ -8,9 +8,11 @@ Construir una app móvil con **navegación completa** usando React Navigation 7,
 
 ## 📋 Tu Dominio Asignado
 
-**Dominio**: [El instructor te asignará tu dominio único al inicio del bootcamp]
+**Dominio**: **Museo / Obras de arte**
 
-> 📌 Tu implementación debe ser coherente con tu dominio. No copies implementaciones de otros aprendices.
+- **Pantalla Lista (Galería)**: Catálogo de obras maestras con artista, sala, periodo y año.
+- **Pantalla Detalle (Ficha de Obra)**: Visualización completa de la obra (técnica, sala, descripción histórica y botón de retorno) recibiendo parámetros tipados.
+- **Pestaña Favoritos**: Colección destacada de obras preferidas con indicadores visuales y metadata.
 
 ### 💡 Ejemplos de Adaptación por Dominio
 

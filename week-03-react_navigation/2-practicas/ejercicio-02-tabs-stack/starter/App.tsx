@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { registerRootComponent } from 'expo';
 import {
   View,
   Text,
@@ -55,31 +56,29 @@ const FAVORITES: Movie[] = [MOVIES[0], MOVIES[2], MOVIES[5]];
 // ============================================
 // PASO 1: Crear Tab Navigator
 // ============================================
-// Descomenta la siguiente línea:
-// const Tab = createBottomTabNavigator<TabParamList>();
+const Tab = createBottomTabNavigator<TabParamList>();
 
 // ============================================
 // PASO 3: Crear Stack para Home
 // ============================================
-// Descomenta la siguiente línea:
-// const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 // ============================================
 // SCREEN: HomeScreen (lista de películas)
 // ============================================
 function HomeScreen(): React.JSX.Element {
-  // PASO 4: Descomenta para habilitar navegación al detalle
-  // const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'HomeList'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'HomeList'>>();
 
   const renderItem: ListRenderItem<Movie> = useCallback(({ item }) => (
     <Pressable
       style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
-      // PASO 4: Descomenta el onPress
-      // onPress={() => navigation.navigate('HomeDetail', {
-      //   id: item.id,
-      //   name: item.name,
-      //   emoji: item.emoji,
-      // })}
+      onPress={() =>
+        navigation.navigate('HomeDetail', {
+          id: item.id,
+          name: item.name,
+          emoji: item.emoji,
+        })
+      }
     >
       <Text style={styles.itemEmoji}>{item.emoji}</Text>
       <View style={styles.itemInfo}>
@@ -88,9 +87,7 @@ function HomeScreen(): React.JSX.Element {
       </View>
       <Text style={styles.chevron}>›</Text>
     </Pressable>
-  // PASO 4: añade navigation a las dependencias
-  // ), [navigation]);
-  ), []);
+  ), [navigation]);
 
   return (
     <View style={styles.screenContainer}>
@@ -111,16 +108,10 @@ function HomeScreen(): React.JSX.Element {
 function DetailScreen(): React.JSX.Element {
   const navigation = useNavigation();
 
-  // PASO 3+4: Descomenta para recibir los params del Stack anidado
-  // type DetailRP = NativeStackRouteProp<HomeStackParamList, 'HomeDetail'>;
-  // const route = useRoute<DetailRP>();
-  // const { id, name, emoji } = route.params;
-  // const movie = MOVIES.find((m) => m.id === id);
-
-  // Placeholders — eliminar tras PASO 4
-  const name = 'Descomenta PASO 4';
-  const emoji = '🎬';
-  const movie = MOVIES[0];
+  type DetailRP = NativeStackRouteProp<HomeStackParamList, 'HomeDetail'>;
+  const route = useRoute<DetailRP>();
+  const { id, name, emoji } = route.params;
+  const movie = MOVIES.find((m) => m.id === id);
 
   return (
     <View style={styles.screenContainer}>
@@ -173,61 +164,56 @@ function FavoritesScreen(): React.JSX.Element {
 // ============================================
 // PASO 3: HomeStackNavigator — Stack dentro del tab
 // ============================================
-// Descomenta esta función entera:
-// function HomeStackNavigator(): React.JSX.Element {
-//   return (
-//     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-//       <HomeStack.Screen name="HomeList" component={HomeScreen} />
-//       <HomeStack.Screen name="HomeDetail" component={DetailScreen} />
-//     </HomeStack.Navigator>
-//   );
-// }
+function HomeStackNavigator(): React.JSX.Element {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="HomeList" component={HomeScreen} />
+      <HomeStack.Screen name="HomeDetail" component={DetailScreen} />
+    </HomeStack.Navigator>
+  );
+}
 
 // ============================================
 // App principal
 // ============================================
 export default function App(): React.JSX.Element {
-  // PASO 1: Reemplaza el View placeholder por NavigationContainer + Tab
-  // return (
-  //   <NavigationContainer>
-  //     <Tab.Navigator
-  //       {/* PASO 2: Mueve aquí los screenOptions con íconos */}
-  //       screenOptions={({ route }) => ({
-  //         tabBarIcon: ({ focused, color, size }) => {
-  //           let iconName: keyof typeof Ionicons.glyphMap;
-  //           if (route.name === 'Home') {
-  //             iconName = focused ? 'film' : 'film-outline';
-  //           } else {
-  //             iconName = focused ? 'heart' : 'heart-outline';
-  //           }
-  //           return <Ionicons name={iconName} size={size} color={color} />;
-  //         },
-  //         tabBarActiveTintColor: '#61DAFB',
-  //         tabBarInactiveTintColor: '#8b949e',
-  //         tabBarStyle: {
-  //           backgroundColor: '#161b22',
-  //           borderTopColor: '#30363d',
-  //           borderTopWidth: 1,
-  //         },
-  //         headerStyle: { backgroundColor: '#161b22' },
-  //         headerTintColor: '#e6edf3',
-  //         headerTitleStyle: { fontWeight: '600' },
-  //       })}
-  //     >
-  //       {/* PASO 1 sin stack: */}
-  //       {/* <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Películas' }} /> */}
-  //       {/* PASO 3 con stack anidado: */}
-  //       <Tab.Screen name="Home" component={HomeStackNavigator} options={{ title: 'Películas', headerShown: false }} />
-  //       <Tab.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favoritos' }} />
-  //     </Tab.Navigator>
-  //   </NavigationContainer>
-  // );
-
   return (
-    <SafeAreaView style={styles.placeholder}>
-      <Text style={styles.placeholderTitle}>Tab + Stack Navigator</Text>
-      <Text style={styles.placeholderSub}>Descomenta PASO 1 para comenzar</Text>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName: keyof typeof Ionicons.glyphMap;
+            if (route.name === 'Home') {
+              iconName = focused ? 'film' : 'film-outline';
+            } else {
+              iconName = focused ? 'heart' : 'heart-outline';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#61DAFB',
+          tabBarInactiveTintColor: '#8b949e',
+          tabBarStyle: {
+            backgroundColor: '#161b22',
+            borderTopColor: '#30363d',
+            borderTopWidth: 1,
+          },
+          headerStyle: { backgroundColor: '#161b22' },
+          headerTintColor: '#e6edf3',
+          headerTitleStyle: { fontWeight: '600' },
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeStackNavigator}
+          options={{ title: 'Películas', headerShown: false }}
+        />
+        <Tab.Screen
+          name="Favorites"
+          component={FavoritesScreen}
+          options={{ title: 'Favoritos' }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -341,3 +327,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+registerRootComponent(App);
