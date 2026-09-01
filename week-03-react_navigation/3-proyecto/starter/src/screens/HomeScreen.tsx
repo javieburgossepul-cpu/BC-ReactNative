@@ -1,7 +1,8 @@
 // src/screens/HomeScreen.tsx
-// Pantalla de lista — muestra todos los elementos del dominio.
-// Al presionar un ítem navega al DetailScreen pasando los params.
+// Pantalla de lista — muestra todas las obras de arte del museo.
+// Al presionar una obra navega a DetailScreen pasando todos los parámetros.
 
+import React, { useCallback } from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -27,22 +28,23 @@ export function HomeScreen(): React.JSX.Element {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   /**
-   * Navega al DetailScreen pasando los datos del ítem seleccionado.
-   * TODO: agrega los campos extra de tu dominio a los params
-   * Ejemplo: navigation.navigate('HomeDetail', { id, name, author, isbn })
+   * Navega a DetailScreen pasando todos los datos tipados de la obra seleccionada.
    */
-  function handleItemPress(item: Item): void {
+  const handleItemPress = useCallback((item: Item): void => {
     navigation.navigate('HomeDetail', {
       id: item.id,
       name: item.name,
-      // TODO: pasar campos adicionales de tu dominio
+      artist: item.artist,
+      year: item.year,
+      room: item.room,
+      description: item.description,
+      technique: item.technique,
+      period: item.period,
     });
-  }
+  }, [navigation]);
 
   /**
-   * Renderiza cada ítem de la lista.
-   * TODO: adaptar el diseño de la tarjeta a tu dominio.
-   * Puedes mostrar más información (precio, autor, género, etc.)
+   * Renderiza cada obra de arte como una tarjeta estilizada.
    */
   function renderItem({ item }: { item: Item }): React.JSX.Element {
     return (
@@ -52,16 +54,30 @@ export function HomeScreen(): React.JSX.Element {
           pressed && styles.cardPressed,
         ]}
         onPress={() => handleItemPress(item)}
-        // testID permite encontrar el elemento en tests
         testID={`item-${item.id}`}
       >
-        <Text style={styles.itemName}>{item.name}</Text>
+        <View style={styles.cardHeader}>
+          <Text style={styles.itemName}>{item.name}</Text>
+          <View style={styles.yearBadge}>
+            <Text style={styles.yearText}>{item.year}</Text>
+          </View>
+        </View>
+
+        <Text style={styles.itemArtist}>{item.artist}</Text>
+
+        <View style={styles.badgeRow}>
+          <View style={styles.roomBadge}>
+            <Text style={styles.roomText}>🏛️ {item.room}</Text>
+          </View>
+          <View style={styles.periodBadge}>
+            <Text style={styles.periodText}>{item.period}</Text>
+          </View>
+        </View>
+
         <Text style={styles.itemDescription} numberOfLines={2}>
           {item.description}
         </Text>
-        {/* TODO: agregar más información del ítem según tu dominio */}
-        {/* Ejemplo (Farmacia): <Text style={styles.price}>${item.price}</Text> */}
-        {/* Ejemplo (Biblioteca): <Text style={styles.author}>{item.author}</Text> */}
+
         <Text style={styles.chevron}>{'›'}</Text>
       </Pressable>
     );
@@ -69,17 +85,17 @@ export function HomeScreen(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
-      {/* TODO: agregar un header o título descriptivo de tu dominio */}
-      {/* <Text style={styles.header}>Mi Biblioteca</Text> */}
       <FlatList
         data={ITEMS}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
-        // Separador visual entre ítems
         ItemSeparatorComponent={() => <View style={styles.separator} />}
-        // TODO: agregar ListEmptyComponent para cuando no haya datos
-        // ListEmptyComponent={<Text style={styles.empty}>Sin elementos</Text>}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No hay obras registradas</Text>
+          </View>
+        }
       />
     </View>
   );
@@ -95,25 +111,80 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
+    borderRadius: RADIUS.lg,
     padding: SPACING.base,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
   cardPressed: {
-    opacity: 0.7,
+    opacity: 0.8,
     backgroundColor: COLORS.surfaceAlt,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.xs,
+    paddingRight: SPACING.xl,
   },
   itemName: {
     fontSize: TYPOGRAPHY.size.md,
-    fontWeight: TYPOGRAPHY.weight.semibold,
+    fontWeight: TYPOGRAPHY.weight.bold,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    flex: 1,
+  },
+  yearBadge: {
+    backgroundColor: COLORS.surfaceAlt,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 2,
+    borderRadius: RADIUS.sm,
+  },
+  yearText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    fontWeight: TYPOGRAPHY.weight.semibold,
+    color: COLORS.accent,
+  },
+  itemArtist: {
+    fontSize: TYPOGRAPHY.size.base,
+    fontWeight: TYPOGRAPHY.weight.medium,
+    color: COLORS.accent,
+    marginBottom: SPACING.sm,
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.xs,
+    marginBottom: SPACING.sm,
+  },
+  roomBadge: {
+    backgroundColor: COLORS.surfaceAlt,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 3,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  roomText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    color: COLORS.textSecondary,
+    fontWeight: TYPOGRAPHY.weight.medium,
+  },
+  periodBadge: {
+    backgroundColor: COLORS.accentDim,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 3,
+    borderRadius: RADIUS.sm,
+  },
+  periodText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    color: COLORS.accent,
+    fontWeight: TYPOGRAPHY.weight.medium,
   },
   itemDescription: {
     fontSize: TYPOGRAPHY.size.sm,
     color: COLORS.textSecondary,
-    lineHeight: 18,
+    lineHeight: 19,
+    paddingRight: SPACING.base,
   },
   chevron: {
     position: 'absolute',
@@ -123,6 +194,14 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
   },
   separator: {
-    height: SPACING.sm,
+    height: SPACING.md,
+  },
+  emptyContainer: {
+    paddingTop: SPACING.xxl,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: TYPOGRAPHY.size.base,
+    color: COLORS.textMuted,
   },
 });

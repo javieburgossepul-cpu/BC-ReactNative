@@ -1,9 +1,9 @@
 // App.tsx
 // Punto de entrada principal de la app.
 // NavigationContainer debe envolver TODA la navegación de la app.
-// Este archivo no necesita cambios — todo el trabajo de navegación
-// va en src/navigation/RootNavigator.tsx
 
+import React from 'react';
+import { registerRootComponent } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -22,3 +22,5 @@ export default function App(): React.JSX.Element {
     </SafeAreaProvider>
   );
 }
+
+registerRootComponent(App);

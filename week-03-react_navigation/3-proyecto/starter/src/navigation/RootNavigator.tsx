@@ -2,10 +2,11 @@
 // Configura la estructura completa de navegación:
 //   Tab Navigator (raíz)
 //     └── Home tab  → HomeStack (Stack Navigator anidado)
-//           ├── HomeList  (lista de elementos)
-//           └── HomeDetail (detalle de un elemento con params)
+//           ├── HomeList  (lista de obras de arte)
+//           └── HomeDetail (detalle de la obra con params)
 //     └── Favorites tab → FavoritesScreen
 
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,37 +24,30 @@ import type { HomeStackParamList, RootTabParamList } from './types';
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 /**
- * Navigator que gestiona la navegación dentro de la pestaña Home.
- * Es un componente que se usa dentro del Tab Navigator.
- * El headerShown: false en el Tab evita doble header.
+ * Navigator que gestiona la navegación dentro de la pestaña Home (Galería).
+ * Es un Stack anidado dentro del Tab Navigator.
  */
 function HomeStackNavigator(): React.JSX.Element {
   return (
     <HomeStack.Navigator
       screenOptions={{
-        // TODO: personalizar el header con colores del tema
-        // headerStyle: { backgroundColor: COLORS.surface },
-        // headerTintColor: COLORS.accent,
-        // headerTitleStyle: { fontWeight: 'bold' },
+        headerStyle: { backgroundColor: COLORS.surface },
+        headerTintColor: COLORS.accent,
+        headerTitleStyle: { fontWeight: '600', color: COLORS.textPrimary },
+        contentStyle: { backgroundColor: COLORS.background },
       }}
     >
-      {/* Pantalla inicial del Stack — lista de elementos */}
+      {/* Pantalla inicial del Stack — catálogo de obras */}
       <HomeStack.Screen
         name="HomeList"
         component={HomeScreen}
-        // TODO: cambiar el título al nombre de tu dominio
-        // options={{ title: 'Mis Libros' }}
-        // options={{ title: 'Catálogo' }}
-        options={{ title: 'Inicio' }}
+        options={{ title: 'Galería de Arte' }}
       />
-      {/* Pantalla de detalle — recibe params del Stack */}
+      {/* Pantalla de detalle — recibe params del Stack con título dinámico */}
       <HomeStack.Screen
         name="HomeDetail"
         component={DetailScreen}
-        // El título se puede leer dinámicamente desde los params
-        // options={({ route }) => ({ title: route.params.name })}
-        // TODO: descomentar la línea de arriba y borrar la de abajo
-        options={{ title: 'Detalle' }}
+        options={({ route }) => ({ title: route.params.name })}
       />
     </HomeStack.Navigator>
   );
@@ -69,42 +63,42 @@ export function RootNavigator(): React.JSX.Element {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        // TODO: implementar la función tabBarIcon para cada pestaña
-        // Deben ser iconos de Ionicons que cambien de color según `focused`
-        // tabBarIcon: ({ focused, color, size }) => {
-        //   let iconName: keyof typeof Ionicons.glyphMap;
-        //   if (route.name === 'Home') {
-        //     iconName = focused ? 'home' : 'home-outline';
-        //   } else {
-        //     iconName = focused ? 'heart' : 'heart-outline';
-        //   }
-        //   return <Ionicons name={iconName} size={size} color={color} />;
-        // },
-        // Color del ícono/texto activo
-        // TODO: descomentar para aplicar el color del tema
-        // tabBarActiveTintColor: COLORS.accent,
-        // tabBarInactiveTintColor: COLORS.textSecondary,
-        // Ocultar el header del Tab porque cada Stack ya tiene el suyo
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap;
+          if (route.name === 'Home') {
+            iconName = focused ? 'color-palette' : 'color-palette-outline';
+          } else {
+            iconName = focused ? 'heart' : 'heart-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: COLORS.accent,
+        tabBarInactiveTintColor: COLORS.textSecondary,
+        tabBarStyle: {
+          backgroundColor: COLORS.surface,
+          borderTopColor: COLORS.border,
+          borderTopWidth: 1,
+        },
         headerShown: false,
-        // TODO: personalizar el fondo del tab bar
-        // tabBarStyle: { backgroundColor: COLORS.surface },
       })}
     >
-      {/* La pestaña Home usa el Stack interno */}
+      {/* Pestaña de Galería con Stack anidado */}
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
-        // TODO: personalizar la etiqueta según tu dominio
-        // options={{ tabBarLabel: 'Catálogo' }}
-        options={{ tabBarLabel: 'Inicio' }}
+        options={{ tabBarLabel: 'Galería' }}
       />
-      {/* La pestaña Favorites va directo a la pantalla (sin Stack) */}
+      {/* Pestaña de Favoritos */}
       <Tab.Screen
         name="Favorites"
         component={FavoritesScreen}
-        // TODO: personalizar la etiqueta según tu dominio
-        // options={{ tabBarLabel: 'Mis Guardados' }}
-        options={{ tabBarLabel: 'Favoritos' }}
+        options={{
+          tabBarLabel: 'Favoritos',
+          headerShown: true,
+          headerStyle: { backgroundColor: COLORS.surface },
+          headerTintColor: COLORS.accent,
+          headerTitleStyle: { fontWeight: '600', color: COLORS.textPrimary },
+        }}
       />
     </Tab.Navigator>
   );

@@ -1,81 +1,102 @@
 // src/data/mockData.ts
-// Datos de prueba genéricos para la app.
-// TODO: reemplazar con datos de tu dominio asignado.
+// Datos de prueba para el dominio Museo / Obras de arte.
 
 import type { Item } from '../types';
 
 // ============================================
-// LISTA PRINCIPAL DE ELEMENTOS
+// LISTA PRINCIPAL DE OBRAS DE ARTE
 // ============================================
-// Estos son datos genéricos de placeholder.
-// Debes reemplazarlos con datos coherentes a tu dominio.
-//
-// Ejemplos:
-//   Biblioteca  → libros con autor, ISBN, páginas
-//   Farmacia    → medicamentos con precio, stock, dosis
-//   Gimnasio    → rutinas con duración, grupos musculares
-//   Restaurante → platillos con precio, ingredientes
-//   Cine        → películas con director, año, género
 
 export const ITEMS: Item[] = [
   {
     id: '1',
-    name: 'Elemento 01',
-    description: 'Descripción del primer elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'La Mona Lisa',
+    artist: 'Leonardo da Vinci',
+    year: 1503,
+    room: 'Sala Renacimiento (1)',
+    technique: 'Óleo sobre tabla de álamo',
+    period: 'Alto Renacimiento',
+    description: 'Retrato icónico de Lisa Gherardini con su célebre sonrisa enigmática y la revolucionaria técnica del sfumato.',
   },
   {
     id: '2',
-    name: 'Elemento 02',
-    description: 'Descripción del segundo elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'La noche estrellada',
+    artist: 'Vincent van Gogh',
+    year: 1889,
+    room: 'Sala Postimpresionismo (2)',
+    technique: 'Óleo sobre lienzo',
+    period: 'Postimpresionismo',
+    description: 'Vista nocturna desde el sanatorio de Saint-Rémy-de-Provence con cielos arremolinados y un ciprés imponente.',
   },
   {
     id: '3',
-    name: 'Elemento 03',
-    description: 'Descripción del tercer elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'El grito',
+    artist: 'Edvard Munch',
+    year: 1893,
+    room: 'Sala Expresionismo (3)',
+    technique: 'Óleo, temple y pastel sobre cartón',
+    period: 'Expresionismo',
+    description: 'Figura andrógina en un momento de profunda angustia existencial bajo un cielo llameante en Oslo.',
   },
   {
     id: '4',
-    name: 'Elemento 04',
-    description: 'Descripción del cuarto elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'Guernica',
+    artist: 'Pablo Picasso',
+    year: 1937,
+    room: 'Sala Arte Moderno (4)',
+    technique: 'Óleo sobre lienzo monumental',
+    period: 'Cubismo / Surrealismo',
+    description: 'Poderoso alegato antibélico que retrata el bombardeo a la villa vasca durante la Guerra Civil Española.',
   },
   {
     id: '5',
-    name: 'Elemento 05',
-    description: 'Descripción del quinto elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'La persistencia de la memoria',
+    artist: 'Salvador Dalí',
+    year: 1931,
+    room: 'Sala Surrealismo (5)',
+    technique: 'Óleo sobre lienzo',
+    period: 'Surrealismo',
+    description: 'Famosos relojes blandos derritiéndose en un paisaje costero onírico de Portlligat.',
   },
   {
     id: '6',
-    name: 'Elemento 06',
-    description: 'Descripción del sexto elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'Las meninas',
+    artist: 'Diego Velázquez',
+    year: 1656,
+    room: 'Sala Barroco Español (6)',
+    technique: 'Óleo sobre lienzo',
+    period: 'Barroco',
+    description: 'Obra maestra de la perspectiva y el metarte con la infanta Margarita rodeada de sus damas en el Alcázar de Madrid.',
   },
   {
     id: '7',
-    name: 'Elemento 07',
-    description: 'Descripción del séptimo elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'El nacimiento de Venus',
+    artist: 'Sandro Botticelli',
+    year: 1485,
+    room: 'Sala Renacimiento Florentino (7)',
+    technique: 'Tempera sobre lienzo',
+    period: 'Primer Renacimiento',
+    description: 'Llegada de la diosa del amor y la belleza sobre una concha a la orilla del mar tras su nacimiento.',
   },
   {
     id: '8',
-    name: 'Elemento 08',
-    description: 'Descripción del octavo elemento de tu dominio.',
-    // TODO: agregar campos específicos de tu dominio
+    name: 'La creación de Adán',
+    artist: 'Miguel Ángel',
+    year: 1512,
+    room: 'Sala Capilla Sixtina (8)',
+    technique: 'Fresco',
+    period: 'Alto Renacimiento',
+    description: 'Célebre escena del techo de la Capilla Sixtina donde Dios da la chispa de la vida al primer hombre.',
   },
 ];
 
 // ============================================
 // LISTA DE FAVORITOS
 // ============================================
-// Subconjunto de elementos para la pestaña Favorites.
-// TODO: seleccionar elementos coherentes con tu dominio.
 
 export const FAVORITES: Item[] = [
-  ITEMS[0],
-  ITEMS[2],
-  ITEMS[4],
+  ITEMS[0], // La Mona Lisa
+  ITEMS[1], // La noche estrellada
+  ITEMS[4], // La persistencia de la memoria
+  ITEMS[5], // Las meninas
 ];

@@ -1,6 +1,6 @@
 // src/navigation/types.ts
 // Define los tipos de parámetros para cada navigator.
-// Esto habilita autocompletado y verificación en tiempo de compilación.
+// Esto habilita autocompletado y verificación estricta en tiempo de compilación.
 
 // ============================================
 // TAB NAVIGATOR — pantallas de nivel raíz
@@ -18,15 +18,17 @@ export type RootTabParamList = {
 // ============================================
 
 export type HomeStackParamList = {
-  // Pantalla de lista (sin params)
+  // Pantalla de lista de obras (sin params)
   HomeList: undefined;
-  // Pantalla de detalle — recibe id y name como mínimo
-  // TODO: agregar campos específicos de tu dominio
-  // Ejemplo (Biblioteca):   author: string; isbn: string;
-  // Ejemplo (Farmacia):     price: number; stock: number;
-  // Ejemplo (Cine):         director: string; year: number;
+  // Pantalla de detalle — recibe todos los datos tipados de la obra
   HomeDetail: {
     id: string;
     name: string;
+    artist: string;
+    year: number;
+    room: string;
+    description: string;
+    technique: string;
+    period: string;
   };
 };

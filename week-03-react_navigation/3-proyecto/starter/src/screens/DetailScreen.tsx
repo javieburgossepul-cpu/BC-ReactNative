@@ -1,10 +1,16 @@
 // src/screens/DetailScreen.tsx
-// Pantalla de detalle — recibe los datos del ítem seleccionado via params.
-// Los params llegan del Stack Navigator cuando se llama navigate('HomeDetail', {...}).
+// Pantalla de detalle — recibe los datos tipados de la obra seleccionada vía params.
 
+import React from 'react';
 import type { NativeStackRouteProp } from '@react-navigation/native-stack';
-import { useRoute } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '../theme';
 import type { HomeStackParamList } from '../navigation/types';
@@ -13,63 +19,57 @@ import type { HomeStackParamList } from '../navigation/types';
 type DetailScreenRouteProp = NativeStackRouteProp<HomeStackParamList, 'HomeDetail'>;
 
 export function DetailScreen(): React.JSX.Element {
-  // useRoute devuelve los params pasados desde HomeScreen
+  const navigation = useNavigation();
   const route = useRoute<DetailScreenRouteProp>();
-  const { id, name } = route.params;
-  // TODO: desestructurar campos adicionales de tu dominio
-  // Ejemplo (Biblioteca):   const { id, name, author, isbn, pages } = route.params;
-  // Ejemplo (Farmacia):     const { id, name, price, dosage } = route.params;
-  // Ejemplo (Cine):         const { id, name, director, year, genre } = route.params;
+  const { id, name, artist, year, room, description, technique, period } = route.params;
 
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
     >
-      {/* Título del elemento */}
-      <Text style={styles.name}>{name}</Text>
-
-      {/* Badge con el ID */}
-      <View style={styles.badge}>
-        <Text style={styles.badgeText}>ID: {id}</Text>
+      {/* Encabezado con insignias */}
+      <View style={styles.badgeRow}>
+        <View style={styles.idBadge}>
+          <Text style={styles.idBadgeText}>ID #{id}</Text>
+        </View>
+        <View style={styles.periodBadge}>
+          <Text style={styles.periodBadgeText}>{period}</Text>
+        </View>
       </View>
 
-      {/* TODO: mostrar los detalles específicos de tu dominio */}
-      {/* Cada sección de detalle sigue el mismo patrón: */}
+      {/* Título de la obra */}
+      <Text style={styles.title}>{name}</Text>
+      <Text style={styles.artist}>{artist} ({year})</Text>
 
-      {/* PATRÓN DE CAMPO DE DETALLE: */}
-      {/* <View style={styles.field}>
-        <Text style={styles.fieldLabel}>Autor</Text>
-        <Text style={styles.fieldValue}>{author}</Text>
-      </View> */}
-
-      {/* Agrega tantos campos como necesite tu dominio */}
-      {/* Ejemplo Biblioteca:  */}
-      {/* <View style={styles.field}>
-        <Text style={styles.fieldLabel}>ISBN</Text>
-        <Text style={styles.fieldValue}>{isbn}</Text>
+      {/* Tarjeta de Ubicación en el Museo */}
+      <View style={styles.card}>
+        <Text style={styles.fieldLabel}>🏛️ Ubicación en el Museo</Text>
+        <Text style={styles.fieldValue}>{room}</Text>
       </View>
-      <View style={styles.field}>
-        <Text style={styles.fieldLabel}>Páginas</Text>
-        <Text style={styles.fieldValue}>{pages}</Text>
-      </View> */}
 
-      {/* Ejemplo Farmacia: */}
-      {/* <View style={styles.field}>
-        <Text style={styles.fieldLabel}>Precio</Text>
-        <Text style={styles.fieldValue}>${price}</Text>
+      {/* Tarjeta de Técnica */}
+      <View style={styles.card}>
+        <Text style={styles.fieldLabel}>🎨 Técnica y Materiales</Text>
+        <Text style={styles.fieldValue}>{technique}</Text>
       </View>
-      <View style={styles.field}>
-        <Text style={styles.fieldLabel}>Dosificación</Text>
-        <Text style={styles.fieldValue}>{dosage}</Text>
-      </View> */}
 
-      {/* Placeholder — eliminar cuando implementes tu dominio */}
-      <View style={styles.placeholder}>
-        <Text style={styles.placeholderText}>
-          Agrega aquí los campos de detalle de tu dominio
-        </Text>
+      {/* Tarjeta de Descripción */}
+      <View style={styles.card}>
+        <Text style={styles.fieldLabel}>📖 Descripción Histórica</Text>
+        <Text style={styles.descriptionText}>{description}</Text>
       </View>
+
+      {/* Botón de retorno */}
+      <Pressable
+        style={({ pressed }) => [
+          styles.backButton,
+          pressed && styles.backButtonPressed,
+        ]}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backButtonText}>← Volver a la Galería</Text>
+      </Pressable>
     </ScrollView>
   );
 }
@@ -82,57 +82,88 @@ const styles = StyleSheet.create({
   content: {
     padding: SPACING.base,
     gap: SPACING.md,
+    paddingBottom: SPACING.xxl,
   },
-  name: {
-    fontSize: TYPOGRAPHY.size.xl,
-    fontWeight: TYPOGRAPHY.weight.bold,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+  badgeRow: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+    alignItems: 'center',
   },
-  badge: {
-    alignSelf: 'flex-start',
+  idBadge: {
+    backgroundColor: COLORS.surfaceAlt,
+    borderRadius: RADIUS.full,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  idBadgeText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    fontWeight: TYPOGRAPHY.weight.semibold,
+    color: COLORS.textSecondary,
+  },
+  periodBadge: {
     backgroundColor: COLORS.accentDim,
     borderRadius: RADIUS.full,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
-    marginBottom: SPACING.md,
   },
-  badgeText: {
+  periodBadgeText: {
     fontSize: TYPOGRAPHY.size.xs,
-    fontWeight: TYPOGRAPHY.weight.medium,
+    fontWeight: TYPOGRAPHY.weight.semibold,
     color: COLORS.accent,
   },
-  field: {
+  title: {
+    fontSize: TYPOGRAPHY.size.xl,
+    fontWeight: TYPOGRAPHY.weight.bold,
+    color: COLORS.textPrimary,
+  },
+  artist: {
+    fontSize: TYPOGRAPHY.size.md,
+    fontWeight: TYPOGRAPHY.weight.medium,
+    color: COLORS.accent,
+    marginBottom: SPACING.xs,
+  },
+  card: {
     backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
+    borderRadius: RADIUS.lg,
     padding: SPACING.base,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
   fieldLabel: {
-    fontSize: TYPOGRAPHY.size.sm,
-    fontWeight: TYPOGRAPHY.weight.medium,
+    fontSize: TYPOGRAPHY.size.xs,
+    fontWeight: TYPOGRAPHY.weight.semibold,
     color: COLORS.textSecondary,
     marginBottom: SPACING.xs,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   },
   fieldValue: {
     fontSize: TYPOGRAPHY.size.base,
     color: COLORS.textPrimary,
+    fontWeight: TYPOGRAPHY.weight.medium,
   },
-  placeholder: {
-    backgroundColor: COLORS.surfaceAlt,
-    borderRadius: RADIUS.md,
-    padding: SPACING.xl,
-    alignItems: 'center',
+  descriptionText: {
+    fontSize: TYPOGRAPHY.size.base,
+    color: COLORS.textPrimary,
+    lineHeight: 22,
+  },
+  backButton: {
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderStyle: 'dashed',
+    borderRadius: RADIUS.md,
+    padding: SPACING.base,
+    alignItems: 'center',
+    marginTop: SPACING.sm,
   },
-  placeholderText: {
-    fontSize: TYPOGRAPHY.size.sm,
-    color: COLORS.textMuted,
-    textAlign: 'center',
+  backButtonPressed: {
+    backgroundColor: COLORS.surfaceAlt,
+  },
+  backButtonText: {
+    fontSize: TYPOGRAPHY.size.base,
+    color: COLORS.accent,
+    fontWeight: TYPOGRAPHY.weight.semibold,
   },
 });

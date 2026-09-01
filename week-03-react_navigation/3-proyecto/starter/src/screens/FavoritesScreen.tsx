@@ -1,8 +1,9 @@
 // src/screens/FavoritesScreen.tsx
 // Segunda pestaña del Tab Navigator.
-// Muestra una lista de elementos favoritos del dominio.
+// Muestra la lista de obras de arte marcadas como favoritas en el museo.
 
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { FAVORITES } from '../data/mockData';
 import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '../theme';
@@ -10,20 +11,30 @@ import type { Item } from '../types';
 
 export function FavoritesScreen(): React.JSX.Element {
   /**
-   * Renderiza cada ítem favorito.
-   * TODO: adaptar el diseño a tu dominio (igual que HomeScreen.renderItem)
+   * Renderiza cada obra favorita en una tarjeta destacada.
    */
   function renderFavorite({ item }: { item: Item }): React.JSX.Element {
     return (
       <View style={styles.card}>
-        {/* Ícono de favorito */}
-        <Text style={styles.heartIcon}>♥</Text>
+        <View style={styles.heartContainer}>
+          <Text style={styles.heartIcon}>♥</Text>
+        </View>
+
         <View style={styles.cardContent}>
-          <Text style={styles.itemName}>{item.name}</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.yearText}>{item.year}</Text>
+          </View>
+
+          <Text style={styles.artistText}>{item.artist}</Text>
+
+          <View style={styles.metaRow}>
+            <Text style={styles.roomText}>🏛️ {item.room}</Text>
+          </View>
+
           <Text style={styles.itemDescription} numberOfLines={2}>
             {item.description}
           </Text>
-          {/* TODO: agregar campos de tu dominio igual que en HomeScreen */}
         </View>
       </View>
     );
@@ -31,9 +42,6 @@ export function FavoritesScreen(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
-      {/* TODO: cambiar el título según tu dominio */}
-      {/* Ejemplos: "Mis Libros Favoritos", "Medicamentos Guardados", etc. */}
-      <Text style={styles.title}>Favoritos</Text>
       <FlatList
         data={FAVORITES}
         keyExtractor={(item) => item.id}
@@ -42,9 +50,9 @@ export function FavoritesScreen(): React.JSX.Element {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
+            <Text style={styles.emptyIcon}>🎨</Text>
             <Text style={styles.emptyText}>
-              {/* TODO: personalizar el mensaje vacío según tu dominio */}
-              No tienes favoritos todavía
+              No tienes obras favoritas guardadas todavía.
             </Text>
           </View>
         }
@@ -58,21 +66,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  title: {
-    fontSize: TYPOGRAPHY.size.lg,
-    fontWeight: TYPOGRAPHY.weight.bold,
-    color: COLORS.textPrimary,
-    paddingHorizontal: SPACING.base,
-    paddingTop: SPACING.base,
-    paddingBottom: SPACING.sm,
-  },
   list: {
-    paddingHorizontal: SPACING.base,
-    paddingBottom: SPACING.base,
+    padding: SPACING.base,
   },
   card: {
     backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
+    borderRadius: RADIUS.lg,
     padding: SPACING.base,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -80,19 +79,52 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: SPACING.md,
   },
-  heartIcon: {
-    fontSize: TYPOGRAPHY.size.lg,
-    color: COLORS.error,
+  heartContainer: {
+    backgroundColor: '#f8514922',
+    width: 36,
+    height: 36,
+    borderRadius: RADIUS.full,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 2,
+  },
+  heartIcon: {
+    fontSize: TYPOGRAPHY.size.md,
+    color: COLORS.error,
   },
   cardContent: {
     flex: 1,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
   itemName: {
     fontSize: TYPOGRAPHY.size.base,
-    fontWeight: TYPOGRAPHY.weight.semibold,
+    fontWeight: TYPOGRAPHY.weight.bold,
     color: COLORS.textPrimary,
+    flex: 1,
+  },
+  yearText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    color: COLORS.textSecondary,
+    fontWeight: TYPOGRAPHY.weight.semibold,
+  },
+  artistText: {
+    fontSize: TYPOGRAPHY.size.sm,
+    color: COLORS.accent,
+    fontWeight: TYPOGRAPHY.weight.medium,
     marginBottom: SPACING.xs,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    marginBottom: SPACING.xs,
+  },
+  roomText: {
+    fontSize: TYPOGRAPHY.size.xs,
+    color: COLORS.textSecondary,
   },
   itemDescription: {
     fontSize: TYPOGRAPHY.size.sm,
@@ -100,14 +132,19 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   separator: {
-    height: SPACING.sm,
+    height: SPACING.md,
   },
   emptyContainer: {
     paddingTop: SPACING.xxl,
     alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  emptyIcon: {
+    fontSize: 48,
   },
   emptyText: {
     fontSize: TYPOGRAPHY.size.base,
     color: COLORS.textMuted,
+    textAlign: 'center',
   },
 });
