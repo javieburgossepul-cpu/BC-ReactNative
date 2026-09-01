@@ -1,0 +1,102 @@
+// src/data/mockData.ts
+// Datos de prueba para el dominio Museo / Obras de arte.
+
+import type { Item } from '../types';
+
+// ============================================
+// LISTA PRINCIPAL DE OBRAS DE ARTE
+// ============================================
+
+export const ITEMS: Item[] = [
+  {
+    id: '1',
+    name: 'La Mona Lisa',
+    artist: 'Leonardo da Vinci',
+    year: 1503,
+    room: 'Sala Renacimiento (1)',
+    technique: 'Óleo sobre tabla de álamo',
+    period: 'Alto Renacimiento',
+    description: 'Retrato icónico de Lisa Gherardini con su célebre sonrisa enigmática y la revolucionaria técnica del sfumato.',
+  },
+  {
+    id: '2',
+    name: 'La noche estrellada',
+    artist: 'Vincent van Gogh',
+    year: 1889,
+    room: 'Sala Postimpresionismo (2)',
+    technique: 'Óleo sobre lienzo',
+    period: 'Postimpresionismo',
+    description: 'Vista nocturna desde el sanatorio de Saint-Rémy-de-Provence con cielos arremolinados y un ciprés imponente.',
+  },
+  {
+    id: '3',
+    name: 'El grito',
+    artist: 'Edvard Munch',
+    year: 1893,
+    room: 'Sala Expresionismo (3)',
+    technique: 'Óleo, temple y pastel sobre cartón',
+    period: 'Expresionismo',
+    description: 'Figura andrógina en un momento de profunda angustia existencial bajo un cielo llameante en Oslo.',
+  },
+  {
+    id: '4',
+    name: 'Guernica',
+    artist: 'Pablo Picasso',
+    year: 1937,
+    room: 'Sala Arte Moderno (4)',
+    technique: 'Óleo sobre lienzo monumental',
+    period: 'Cubismo / Surrealismo',
+    description: 'Poderoso alegato antibélico que retrata el bombardeo a la villa vasca durante la Guerra Civil Española.',
+  },
+  {
+    id: '5',
+    name: 'La persistencia de la memoria',
+    artist: 'Salvador Dalí',
+    year: 1931,
+    room: 'Sala Surrealismo (5)',
+    technique: 'Óleo sobre lienzo',
+    period: 'Surrealismo',
+    description: 'Famosos relojes blandos derritiéndose en un paisaje costero onírico de Portlligat.',
+  },
+  {
+    id: '6',
+    name: 'Las meninas',
+    artist: 'Diego Velázquez',
+    year: 1656,
+    room: 'Sala Barroco Español (6)',
+    technique: 'Óleo sobre lienzo',
+    period: 'Barroco',
+    description: 'Obra maestra de la perspectiva y el metarte con la infanta Margarita rodeada de sus damas en el Alcázar de Madrid.',
+  },
+  {
+    id: '7',
+    name: 'El nacimiento de Venus',
+    artist: 'Sandro Botticelli',
+    year: 1485,
+    room: 'Sala Renacimiento Florentino (7)',
+    technique: 'Tempera sobre lienzo',
+    period: 'Primer Renacimiento',
+    description: 'Llegada de la diosa del amor y la belleza sobre una concha a la orilla del mar tras su nacimiento.',
+  },
+  {
+    id: '8',
+    name: 'La creación de Adán',
+    artist: 'Miguel Ángel',
+    year: 1512,
+    room: 'Sala Capilla Sixtina (8)',
+    technique: 'Fresco',
+    period: 'Alto Renacimiento',
+    description: 'Célebre escena del techo de la Capilla Sixtina donde Dios da la chispa de la vida al primer hombre.',
+  },
+];
+
+// ============================================
+// LISTA DE FAVORITOS
+// ============================================
+
+export const FAVORITES: Item[] = [
+  ITEMS[0], // La Mona Lisa
+  ITEMS[1], // La noche estrellada
+  ITEMS[4], // La persistencia de la memoria
+  ITEMS[5], // Las meninas
+];
