@@ -1,106 +1,152 @@
-# Proyecto Semana 03 — React Navigation 7
+# Proyecto Semana 03 — App de Obras de Arte con Navegación
 
-## 🎯 Objetivo
+## Descripción
 
-Construir una app móvil con **navegación completa** usando React Navigation 7, aplicada a tu dominio asignado. La app debe tener Tab Navigator con al menos dos pestañas, Stack Navigator anidado dentro de la pestaña principal para ir de lista a detalle, y tipado correcto de parámetros.
+En esta semana se construyó una aplicación móvil con **React Navigation 7** para navegar entre varias pantallas. La aplicación cuenta con una barra de navegación en la parte inferior con dos pestañas (**Galería** y **Favoritos**) y permite entrar al detalle de cada obra de arte tocándola desde la lista principal.
 
----
-
-## 📋 Tu Dominio Asignado
-
-**Dominio**: **Museo / Obras de arte**
-
-- **Pantalla Lista (Galería)**: Catálogo de obras maestras con artista, sala, periodo y año.
-- **Pantalla Detalle (Ficha de Obra)**: Visualización completa de la obra (técnica, sala, descripción histórica y botón de retorno) recibiendo parámetros tipados.
-- **Pestaña Favoritos**: Colección destacada de obras preferidas con indicadores visuales y metadata.
-
-### 💡 Ejemplos de Adaptación por Dominio
-
-| Dominio | Pantalla Lista (Home) | Pantalla Detalle | Pestaña Favoritos |
-|---|---|---|---|
-| Biblioteca | Lista de libros | Detalle del libro (título, autor, ISBN) | Libros favoritos |
-| Farmacia | Catálogo de medicamentos | Ficha del medicamento (dosis, precio) | Medicamentos guardados |
-| Gimnasio | Lista de rutinas | Detalle de rutina (ejercicios, duración) | Rutinas en progreso |
-| Restaurante | Menú del restaurante | Detalle del platillo (ingredientes, precio) | Platillos favoritos |
-| Cine | Cartelera actual | Detalle de película (sinopsis, horarios) | Películas guardadas |
+El proyecto fue realizado utilizando React Native, Expo, TypeScript y pnpm.
 
 ---
 
-## 🗂️ Estructura del Proyecto
+## Mi dominio
 
+El dominio escogido para este proyecto es **Museo de Arte**.
+
+Cada obra tiene información como:
+
+* Nombre de la obra.
+* Artista.
+* Año en que fue creada.
+* Sala donde se encuentra.
+* Descripción de la obra.
+
+Algunas de las obras incluidas son:
+
+* La Mona Lisa.
+* La noche estrellada.
+* El grito.
+* Guernica.
+* La persistencia de la memoria.
+* Las meninas.
+* El nacimiento de Venus.
+* La creación de Adán.
+
+---
+
+## Navegación de la app
+
+La aplicación cuenta con dos pestañas en la barra inferior y navegación a detalle:
+
+### 1. Pestaña Galería (Inicio)
+Muestra el catálogo completo de las obras de arte en tarjetas con el nombre de la obra, el artista, el año, la sala y una vista previa. Al tocar cualquier obra, se abre la pantalla de detalle.
+
+### 2. Pantalla de Detalle de la Obra
+Muestra toda la ficha técnica de la obra seleccionada:
+* Nombre y artista con el año.
+* Sala donde está exhibida.
+* Técnica utilizada.
+* Descripción histórica completa.
+* Un botón para volver a la galería.
+
+El título en la barra superior cambia automáticamente al nombre de la obra seleccionada.
+
+### 3. Pestaña Favoritos
+Muestra una lista especial con las obras favoritas del museo, identificadas con un icono de corazón y los datos principales de cada una.
+
+---
+
+## Capturas de pantalla
+
+### Captura 1 — Lista de Obras (Galería)
+<img src="./starter/0-assets/cap1.jpeg" alt="Lista de Obras" width="300">
+
+### Captura 2 — Detalle de una Obra
+<img src="./starter/0-assets/cap2.jpeg" alt="Detalle de Obra" width="300">
+
+### Captura 3 — Pestaña de Favoritos
+<img src="./starter/0-assets/cap3.jpeg" alt="Favoritos" width="300">
+
+---
+
+## Diseño
+
+Para el diseño mantuve el estilo oscuro de las semanas anteriores, utilizando tonos oscuros para el fondo y las tarjetas.
+
+También utilicé el color azul claro (`#61DAFB`) para resaltar nombres, insignias y elementos activos de la barra de navegación.
+
+La barra de pestañas inferior tiene iconos interactivos que cambian cuando una pestaña está seleccionada.
+
+---
+
+## 📂 Estructura de proyecto
+
+```text
+week-03-react_navigation/
+│
+├── 3-proyecto/
+│   ├── README.md
+│   └── starter/
+│       ├── 0-assets/
+│       │   ├── cap1.jpeg
+│       │   ├── cap2.jpeg
+│       │   └── cap3.jpeg
+│       ├── src/
+│       │   ├── data/
+│       │   │   └── mockData.ts
+│       │   │
+│       │   ├── navigation/
+│       │   │   ├── RootNavigator.tsx
+│       │   │   └── types.ts
+│       │   │
+│       │   ├── screens/
+│       │   │   ├── HomeScreen.tsx
+│       │   │   ├── DetailScreen.tsx
+│       │   │   └── FavoritesScreen.tsx
+│       │   │
+│       │   ├── theme/
+│       │   │   └── index.ts
+│       │   │
+│       │   └── types/
+│       │       └── index.ts
+│       │
+│       ├── app.json
+│       ├── App.tsx
+│       ├── package.json
+│       └── tsconfig.json
 ```
-starter/
-├── App.tsx                         ← NavigationContainer raíz
-├── app.json                        ← configuración Expo
-├── package.json                    ← dependencias exactas
-├── tsconfig.json
-└── src/
-    ├── navigation/
-    │   ├── RootNavigator.tsx       ← Tab + Stack anidado
-    │   └── types.ts                ← RootTabParamList, HomeStackParamList
-    ├── screens/
-    │   ├── HomeScreen.tsx          ← lista de elementos (FlatList)
-    │   ├── DetailScreen.tsx        ← detalle con params del Stack
-    │   └── FavoritesScreen.tsx     ← segunda pestaña
-    ├── data/
-    │   └── mockData.ts             ← datos de prueba (adaptar al dominio)
-    ├── types/
-    │   └── index.ts                ← interface Item (adaptar al dominio)
-    └── theme/
-        └── index.ts                ← COLORS, TYPOGRAPHY, SPACING
-```
+
+Cada archivo tiene una función clara. Los datos de las obras están en `mockData.ts`, la configuración de las rutas y pestañas está en `RootNavigator.tsx` y cada vista tiene su archivo en la carpeta `screens`.
 
 ---
 
-## ✅ Requisitos Funcionales
+## ⚙️ Cómo ejecutar el proyecto
 
-1. **Tab Navigator** con dos pestañas: `Home` y `Favorites`
-2. **Stack anidado en Home**: navegar de lista (`HomeList`) a detalle (`HomeDetail`)
-3. **Params tipados**: pasar al menos `id` y `name` al navegar al detalle
-4. **Iconos en el Tab Bar** usando `@expo/vector-icons` (Ionicons)
-5. **Tipado completo** con `RootTabParamList` y `HomeStackParamList` (sin `any`)
-
-### Requisitos de Detalle
-
-- `HomeScreen` muestra una `FlatList` con elementos del dominio
-- `DetailScreen` lee los params de `useRoute` y los muestra en pantalla
-- `FavoritesScreen` muestra al menos 3 ítems "favoritos" (pueden ser estáticos)
-- `tabBarActiveTintColor` con el color `#61DAFB`
-- Títulos de pantalla descriptivos en el header
-
----
-
-## 🚀 Cómo ejecutar
+Primero se entra a la carpeta del proyecto y se instalan las dependencias:
 
 ```bash
-cd starter
+cd 3-proyecto/starter
 pnpm install
+```
+
+Después se inicia la aplicación con Expo:
+
+```bash
 pnpm start
 ```
 
-Seleccionar simulador iOS (`i`) o Android (`a`) en el menú de Expo CLI.
+Y luego se escanea el código QR desde el celular con la aplicación **Expo Go**.
 
 ---
 
-## 🛠️ Entregables
+## ✅ Entregables realizados
 
-1. App funcional en simulador iOS y/o Android con navegación Tab + Stack
-2. Código TypeScript sin errores, sin `any`, tipos de params correctos
-3. Datos y pantallas adaptados a tu dominio asignado
-4. Capturas de pantalla de las 3 pantallas (Home, Detail, Favorites)
-5. Este README actualizado con descripción breve de tu dominio e implementación
+* Ejercicio 01 (Stack Navigator) completado y funcionando.
+* Ejercicio 02 (Tabs + Stack anidado) completado y funcionando.
+* Proyecto final con Tab Navigator (Galería y Favoritos).
+* Navegación de lista a detalle pasando los datos de la obra.
+* Botón para regresar a la lista de obras.
+* Barra de navegación inferior con iconos interactivos.
+* Diseño en modo oscuro consistente con las semanas anteriores.
+* Proyecto realizado con TypeScript sin errores de tipado.
 
----
-
-## 📊 Criterios de Evaluación
-
-Ver [rubrica-evaluacion.md](../rubrica-evaluacion.md) — sección **Producto 📦 (30%)**
-
-### Penalizaciones Importantes
-
-| Incumplimiento | Penalización |
-|---|---|
-| Params sin tipar (uso de `any` en tipos) | −5 pts |
-| Copia de implementación de otro aprendiz | −15 pts |
-| App no corre en simulador | −10 pts |
-| Stack sin params al navegar al detalle | −5 pts |
+Proyecto realizado para la **Semana 03 — React Native**.
