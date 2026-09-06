@@ -69,13 +69,13 @@ Muestra la lista de obras que el usuario ha guardado como favoritas. Permite eli
 ## Capturas de pantalla
 
 ### Captura 1 — Lista de Obras (Home)
-<img src="./starter/0-assets/cap1.jpeg" alt="Lista de Obras" width="300">
+<img src="./0-assets/cap1.jpeg" alt="Lista de Obras" width="300">
 
 ### Captura 2 — Detalle de una Obra (Detail)
-<img src="./starter/0-assets/cap2.jpeg" alt="Detalle de Obra" width="300">
+<img src="./0-assets/cap2.jpeg" alt="Detalle de Obra" width="300">
 
 ### Captura 3 — Pestaña de Guardadas (Saved)
-<img src="./starter/0-assets/cap3.jpeg" alt="Obras Guardadas" width="300">
+<img src="./0-assets/cap3.jpeg" alt="Obras Guardadas" width="300">
 
 ---
 
@@ -91,47 +91,40 @@ La barra de pestañas inferior tiene iconos interactivos de la librería `Ionico
 
 ## 📂 Estructura de proyecto
 
+## 📂 Estructura de proyecto
+
 ```text
-week-04-estado_global_zustand/
+├── 0-assets/
+│   ├── cap1.jpeg
+│   ├── cap2.jpeg
+│   └── cap3.jpeg
 │
-├── 3-proyecto/
-│   ├── README.md
+├── src/
+│   ├── data/
+│   │   └── mockData.ts
 │   │
-│   └── starter/
-│       ├── 0-assets/
-│       │   ├── cap1.jpeg
-│       │   ├── cap2.jpeg
-│       │   └── cap3.jpeg
-│       ├── src/
-│       │   ├── data/
-│       │   │   └── mockData.ts
-│       │   │
-│       │   ├── navigation/
-│       │   │   ├── RootNavigator.tsx
-│       │   │   └── types.ts
-│       │   │
-│       │   ├── screens/
-│       │   │   ├── HomeScreen.tsx
-│       │   │   ├── DetailScreen.tsx
-│       │   │   └── SavedScreen.tsx
-│       │   │
-│       │   ├── stores/
-│       │   │   └── savedStore.ts
-│       │   │
-│       │   ├── theme/
-│       │   │   └── index.ts
-│       │   │
-│       │   └── types/
-│       │       └── index.ts
-│       │
-│       ├── app.json
-│       ├── App.tsx
-│       ├── package.json
-│       └── tsconfig.json
-```
-
-Cada archivo tiene una función clara. Los datos de las obras están en `mockData.ts`, el estado global está en `savedStore.ts`, la navegación en `RootNavigator.tsx` y las vistas en la carpeta `screens`.
-
+│   ├── navigation/
+│   │   ├── RootNavigator.tsx
+│   │   └── types.ts
+│   │
+│   ├── screens/
+│   │   ├── HomeScreen.tsx
+│   │   ├── DetailScreen.tsx
+│   │   └── SavedScreen.tsx
+│   │
+│   ├── stores/
+│   │   └── savedStore.ts
+│   │
+│   ├── theme/
+│   │   └── index.ts
+│   │
+│   └── types/
+│       └── index.ts
+│
+├── app.json
+├── App.tsx
+├── package.json
+└── tsconfig.json
 ---
 
 ## ⚙️ Cómo ejecutar el proyecto
