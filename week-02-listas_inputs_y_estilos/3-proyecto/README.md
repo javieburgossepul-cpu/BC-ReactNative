@@ -1,149 +1,151 @@
-# Proyecto Semana 02 — App de Listas con Búsqueda
+# Proyecto Semana 02 — App de Obras de Arte
 
-## 🎯 Objetivo
+##  Descripción
 
-Construir una app móvil que combine `FlatList` con `TextInput` para listar y filtrar elementos de tu dominio asignado. Además, aplicarás temas visuales consistentes usando constantes de estilo (`COLORS`, `TYPOGRAPHY`, `SPACING`).
+La aplicación muestra una lista con 10 obras de arte y permite buscar una obra escribiendo su nombre en el buscador. Los resultados van cambiando a medida que se escribe.
 
----
-
-## 📋 Tu Dominio Asignado
-
-**Dominio**: _El instructor te asignará tu dominio al inicio del bootcamp_
-
-Ejemplos de dominios: Biblioteca, Farmacia, Gimnasio, Restaurante, Hotel, Tienda de ropa...
+El proyecto fue realizado utilizando React Native, Expo y TypeScript.
 
 ---
 
-## ✅ Requisitos Funcionales
+##  Mi dominio
 
-### Pantalla Principal (`HomeScreen`)
+El dominio escogido para este proyecto es **Museo de Arte**.
 
-1. **Lista de elementos** — `FlatList` con mínimo 10 items del dominio
-2. **Búsqueda en tiempo real** — `TextInput` que filtra la lista mientras el usuario escribe
-3. **Estado vacío** — Mensaje personalizado cuando la búsqueda no encuentra resultados
-4. **Tarjeta de elemento** — Componente `ItemCard` que muestra al menos 3 campos del dominio
-5. **Teclado** — `KeyboardAvoidingView` para que el teclado no tape el contenido
-6. **Theming** — Todos los estilos usando las constantes de `src/theme/index.ts`
+Cada obra tiene información como:
 
-### Requerimientos Técnicos
+* Nombre de la obra.
+* Artista.
+* Año en que fue creada.
+* Sala donde se encuentra.
 
-- `keyExtractor` usando el `id` del item (nunca el índice del array)
-- `useMemo` para la lógica de filtrado
-- `useCallback` para `renderItem` y el componente de empty state
-- Al menos un `ItemSeparatorComponent` o espaciado visual entre tarjetas
-- TypeScript estricto — sin `any`
+Algunas de las obras incluidas son:
 
----
-
-## 💡 Ejemplos de Adaptación por Dominio
-
-| Dominio     | Tipo del item          | Campos sugeridos                          |
-|-------------|------------------------|------------------------------------------|
-| Biblioteca  | `Book`                 | título, autor, ISBN, disponible          |
-| Farmacia    | `Medicine`             | nombre, precio, stock, categoría         |
-| Gimnasio    | `Member`               | nombre, plan, fecha de vencimiento       |
-| Restaurante | `Dish`                 | nombre, precio, categoría, disponible    |
-| Hotel       | `Room`                 | número, tipo, precio por noche, estado   |
-| Cine        | `Movie`                | título, género, duración, clasificación  |
-| Tienda ropa | `GarmentItem`          | nombre, talla, precio, color             |
+* La Mona Lisa.
+* La noche estrellada.
+* El grito.
+* Guernica.
+* La persistencia de la memoria.
+* Las meninas.
+* El nacimiento de Venus.
+* La creación de Adán.
+* American Gothic.
+* Los girasoles.
 
 ---
 
-## 🗂️ Estructura del Proyecto
+##  Búsqueda
 
+La aplicación tiene un buscador en la parte superior.
+
+El usuario puede escribir el nombre de una obra y la aplicación muestra las que coinciden con la búsqueda.
+
+Por ejemplo, si se escribe:
+
+**Mona**
+
+se muestra:
+
+**La Mona Lisa**
+
+Si no se encuentra ninguna obra, aparece un mensaje indicando que no hay resultados.
+
+---
+
+##  Pantalla principal
+
+La pantalla principal cuenta con:
+
+* El nombre del museo.
+* Un buscador.
+* La lista de obras de arte.
+* Tarjetas con la información de cada obra.
+
+## Captura de pantalla
+
+### Captura 1 Listado de Oras
+ <img src="./starter/0-assets/cap1.jpeg" alt="Pantalla principal" width="300">
+
+### Captura 2 Busqueda de Obra
+<img src="./starter/0-assets/cap2.jpeg" alt="Pantalla principal" width="300">
+
+---
+
+##  Diseño
+
+Para el diseño escogí un estilo oscuro, utilizando diferentes tonos para el fondo, las tarjetas y los textos.
+
+También utilicé un color azul claro para destacar algunos elementos de la aplicación.
+
+La idea fue mantener un diseño sencillo y fácil de entender para que el usuario pueda encontrar rápidamente una obra.
+
+---
+
+## 📂 Estructyra de proyecto
+
+```text
+week-02-listas_inputs_y_estilos/
+│
+└── 3-proyecto/
+   ├── README.md
+   └── starter/
+       ├── 0-assets/
+       │   ├── cap1.jpeg
+       │   └── cap2.jpeg
+       ├── src/
+       │   ├── components/
+       │   │   └── ItemCard.tsx
+       │   │
+       │   ├── data/
+       │   │   └── mockData.ts
+       │   │
+       │   ├── screens/
+       │   │   └── HomeScreen.tsx
+       │   │
+       │   ├── theme/
+       │   │   └── index.ts
+       │   │
+       │   └── types/
+       │       └── index.ts
+       │
+       ├── app.json
+       ├── App.tsx
+       ├── package.json
+       ├── pnpm-lock.yaml
+       ├── tsconfig.json
 ```
-starter/
-├── App.tsx
-├── app.json
-├── package.json
-├── tsconfig.json
-└── src/
-    ├── types/
-    │   └── index.ts        ← Define tu interfaz Item aquí
-    ├── data/
-    │   └── mockData.ts     ← 10+ items de tu dominio
-    ├── components/
-    │   └── ItemCard.tsx    ← Tarjeta reutilizable
-    ├── screens/
-    │   └── HomeScreen.tsx  ← Pantalla con FlatList + búsqueda
-    └── theme/
-        └── index.ts        ← COLORS, TYPOGRAPHY, SPACING
-```
+
+Cada carpeta tiene una función diferente. Por ejemplo, los datos de las obras están en `mockData.ts`, mientras que la pantalla principal está en `HomeScreen.tsx`.
 
 ---
 
-## 🛠️ Instrucciones de Trabajo
+## ⚙️ Cómo ejecutar el proyecto
 
-### 1. Define tu interfaz en `src/types/index.ts`
-
-Abre el archivo y completa los `TODO` con los campos específicos de tu dominio.
-
-### 2. Personaliza el theme en `src/theme/index.ts`
-
-Las constantes ya están definidas. Puedes ajustar el color de acento si tu dominio lo requiere.
-
-### 3. Crea los datos mock en `src/data/mockData.ts`
-
-Reemplaza los items genéricos con al menos 10 elementos reales de tu dominio.
-
-### 4. Implementa `ItemCard` en `src/components/ItemCard.tsx`
-
-Completa los `TODO` para mostrar los campos específicos de tu dominio.
-
-### 5. Completa `HomeScreen` en `src/screens/HomeScreen.tsx`
-
-Implementa los `TODO` para conectar búsqueda, filtrado y renderizado.
-
----
-
-## 🚀 Cómo ejecutar
+Primero se instalan las dependencias:
 
 ```bash
-cd starter
 pnpm install
+```
+
+Después se inicia la aplicación:
+
+```bash
 pnpm start
 ```
 
 ---
 
-## 📱 Entregables
+## ✅ Entregables realizados
 
-1. App funcional en simulador iOS y/o Android
-2. Al menos 10 items del dominio asignado en `mockData.ts`
-3. Búsqueda funcionando en tiempo real
-4. `README.md` en la raíz de tu entrega con:
-   - Descripción de tu dominio
-   - Captura de pantalla (o descripción de las pantallas)
-   - Decisiones de diseño tomadas
+*  Lista con 10 obras de arte.
+*  Buscador funcionando.
+*  Resultados actualizados mientras se escribe.
+*  Mensaje cuando no se encuentran resultados.
+*  Tarjetas con información de las obras.
+*  Diseño oscuro.
+*  Manejo del teclado.
+*  Proyecto realizado con TypeScript.
 
----
+Proyecto realizado para la **Semana 02 — React Native**.
 
-## ⚠️ Criterios que se evaluarán
 
-| Criterio | Puntos |
-|----------|--------|
-| FlatList con `keyExtractor` por ID | 5 pts |
-| TextInput con búsqueda funcional | 5 pts |
-| `useMemo` para filtrado | 5 pts |
-| Componente `ItemCard` con 3+ campos | 5 pts |
-| Estado vacío personalizado | 3 pts |
-| `KeyboardAvoidingView` correcto | 3 pts |
-| Constantes de tema (`COLORS`, etc.) | 2 pts |
-| TypeScript sin `any` | 2 pts |
-| **Total** | **30 pts** |
-
----
-
-## 🔗 Material de apoyo
-
-- [Teoría: FlatList y SectionList](../1-teoria/01-flatlist-sectionlist.md)
-- [Teoría: TextInput y Teclado](../1-teoria/02-textinput-teclado.md)
-- [Teoría: Estilos Dinámicos](../1-teoria/03-estilos-dinamicos.md)
-- [Ejercicio 01: FlatList básica](../2-practicas/ejercicio-01-flatlist-basica/README.md)
-- [Ejercicio 02: Búsqueda con Input](../2-practicas/ejercicio-02-busqueda-input/README.md)
-
----
-
-## 📊 Rúbrica de Evaluación
-
-Ver [../rubrica-evaluacion.md](../rubrica-evaluacion.md)
