@@ -40,6 +40,8 @@ La aplicación cuenta con dos pestañas en la barra inferior y navegación a det
 ### 1. Pestaña Galería (Inicio)
 Muestra el catálogo completo de las obras de arte en tarjetas con el nombre de la obra, el artista, el año, la sala y una vista previa. Al tocar cualquier obra, se abre la pantalla de detalle.
 
+<img src="./0-assets/cap1.jpeg" alt="Lista de Obras" width="300">
+
 ### 2. Pantalla de Detalle de la Obra
 Muestra toda la ficha técnica de la obra seleccionada:
 * Nombre y artista con el año.
@@ -50,21 +52,12 @@ Muestra toda la ficha técnica de la obra seleccionada:
 
 El título en la barra superior cambia automáticamente al nombre de la obra seleccionada.
 
+<img src="./0-assets/cap2.jpeg" alt="Detalle de Obra" width="300">
+
 ### 3. Pestaña Favoritos
 Muestra una lista especial con las obras favoritas del museo, identificadas con un icono de corazón y los datos principales de cada una.
 
----
-
-## Capturas de pantalla
-
-### Captura 1 — Lista de Obras (Galería)
-<img src="./starter/0-assets/cap1.jpeg" alt="Lista de Obras" width="300">
-
-### Captura 2 — Detalle de una Obra
-<img src="./starter/0-assets/cap2.jpeg" alt="Detalle de Obra" width="300">
-
-### Captura 3 — Pestaña de Favoritos
-<img src="./starter/0-assets/cap3.jpeg" alt="Favoritos" width="300">
+<img src="./0-assets/cap3.jpeg" alt="Favoritos" width="300">
 
 ---
 
@@ -81,38 +74,34 @@ La barra de pestañas inferior tiene iconos interactivos que cambian cuando una 
 ## 📂 Estructura de proyecto
 
 ```text
-week-03-react_navigation/
+├── 0-assets/
+│   ├── cap1.jpeg
+│   ├── cap2.jpeg
+│   └── cap3.jpeg
 │
-├── 3-proyecto/
-│   ├── README.md
-│   └── starter/
-│       ├── 0-assets/
-│       │   ├── cap1.jpeg
-│       │   ├── cap2.jpeg
-│       │   └── cap3.jpeg
-│       ├── src/
-│       │   ├── data/
-│       │   │   └── mockData.ts
-│       │   │
-│       │   ├── navigation/
-│       │   │   ├── RootNavigator.tsx
-│       │   │   └── types.ts
-│       │   │
-│       │   ├── screens/
-│       │   │   ├── HomeScreen.tsx
-│       │   │   ├── DetailScreen.tsx
-│       │   │   └── FavoritesScreen.tsx
-│       │   │
-│       │   ├── theme/
-│       │   │   └── index.ts
-│       │   │
-│       │   └── types/
-│       │       └── index.ts
-│       │
-│       ├── app.json
-│       ├── App.tsx
-│       ├── package.json
-│       └── tsconfig.json
+├── src/
+│   ├── data/
+│   │   └── mockData.ts
+│   │
+│   ├── navigation/
+│   │   ├── RootNavigator.tsx
+│   │   └── types.ts
+│   │
+│   ├── screens/
+│   │   ├── HomeScreen.tsx
+│   │   ├── DetailScreen.tsx
+│   │   └── FavoritesScreen.tsx
+│   │
+│   ├── theme/
+│   │   └── index.ts
+│   │
+│   └── types/
+│       └── index.ts
+│
+├── app.json
+├── App.tsx
+├── package.json
+└── tsconfig.json
 ```
 
 Cada archivo tiene una función clara. Los datos de las obras están en `mockData.ts`, la configuración de las rutas y pestañas está en `RootNavigator.tsx` y cada vista tiene su archivo en la carpeta `screens`.
@@ -121,11 +110,16 @@ Cada archivo tiene una función clara. Los datos de las obras están en `mockDat
 
 ## ⚙️ Cómo ejecutar el proyecto
 
-Primero se entra a la carpeta del proyecto y se instalan las dependencias:
+Primero se instalan las dependencias:
 
 ```bash
-cd 3-proyecto/starter
 pnpm install
+```
+
+Para abrirlo en el navegador web:
+
+```bash
+pnpm run web
 ```
 
 Después se inicia la aplicación con Expo:
