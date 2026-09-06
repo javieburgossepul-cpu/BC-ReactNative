@@ -1,52 +1,117 @@
-# Semana 01 — Core Components y Flexbox
+# Proyecto Semana 01 — App de Obras de Arte con Core Components y Flexbox
 
-**Dominio asignado: Museo**
+## Descripción
 
-## ¿Qué se aprendi esta semana?
+En esta semana se construyó una aplicación móvil con los componentes fundamentales de **React Native** y maquetación con **Flexbox**. La aplicación muestra el catálogo del museo con las obras de arte más representativas en un diseño atractivo, modular y adaptable.
 
-- Crear un proyecto en Expo y correrlo en el celular con la app Expo Go
-- Usar los componentes básicos de React Native: vistas, textos, imágenes, listas con scroll y botones
-- Acomodar los elementos en pantalla usando Flexbox (filas, columnas, alineación)
-- Darle estilo a la app manteniendo un tema de color consistente
-- Entender en qué se diferencia React Native de React para páginas web
+El proyecto fue realizado utilizando React Native, Expo, TypeScript y pnpm.
 
-## Estructura de la carpeta
+---
 
+## Mi dominio
+
+El dominio escogido para este proyecto es **Museo de Arte**.
+
+Cada obra tiene información como:
+
+* Nombre de la obra.
+* Artista / Pintor.
+* Año en que fue creada.
+* Sala donde se encuentra exhibida.
+* Imagen de la obra.
+
+Las obras incluidas son:
+
+* **La Mona Lisa** (Leonardo da Vinci, 1503)
+* **La noche estrellada** (Vincent van Gogh, 1889)
+* **El grito** (Edvard Munch, 1893)
+* **Las meninas** (Diego Velázquez, 1656)
+
+---
+
+## Pantalla principal (HomeScreen)
+
+La pantalla principal cuenta con:
+
+* **Encabezado**: Muestra el nombre del museo y el contador de obras disponibles.
+* **Catálogo interactivo**: Listado de tarjetas de obras con scroll vertical.
+* **Tarjetas personalizadas (`ItemCard`)**: Muestran la imagen de la obra, título, autor, año, sala y un botón interactivo de favorito.
+
+---
+
+## Diseño
+
+Para el diseño mantuve un estilo oscuro elegante, utilizando diferentes tonos para el fondo, las tarjetas y los textos.
+
+Se utilizó el sistema de layout **Flexbox** de React Native para alinear y distribuir armónicamente todos los elementos visuales en pantalla en filas y columnas.
+
+---
+
+## 📂 Estructura de proyecto
+
+```text
+├── 0-assets/
+│   ├── LANOCHE.webp
+│   ├── LASMENINAS.jpg
+│   ├── MONA.jpg
+│   └── elgriton.jpg
+│
+├── src/
+│   ├── components/
+│   │   └── ItemCard.tsx
+│   │
+│   ├── data/
+│   │   └── mockData.ts
+│   │
+│   ├── screens/
+│   │   └── HomeScreen.tsx
+│   │
+│   └── types/
+│       └── index.ts
+│
+├── app.json
+├── App.tsx
+├── package.json
+├── pnpm-lock.yaml
+└── tsconfig.json
 ```
-week-01-core_components_y_flexbox/
-├── 1-teoria/        # Lecturas de la semana
-├── 2-practicas/     # Ejercicios guiados
-└── 3-proyecto/      # App final: Museo
-```
 
-## El proyecto: Museo 
+Cada archivo tiene una función clara. Los datos de las obras están en `mockData.ts`, el componente de la tarjeta en `ItemCard.tsx` y la pantalla principal en `HomeScreen.tsx`.
 
-Es una app de una sola pantalla que muestra una colección de obras de arte, como si fuera un catálogo del museo.
+---
 
-**Qué hace la app:**
+## ⚙️ Cómo ejecutar el proyecto
 
-- Muestra un encabezado con el nombre del museo y cuántas obras hay
-- Lista 4 obras famosas (La Gioconda, La noche estrellada, El grito, Las meninas), cada una con su imagen, nombre, artista, año y sala donde está exhibida
-- Cada obra tiene un botón de estrella para marcarla como favorita
-- Se puede tocar cada tarjeta y hacer scroll para ver todas
-
-**Cómo está armada por dentro:**
-
-- Los datos de las obras están separados del diseño, para que sea fácil agregar o cambiar obras
-- La tarjeta de cada obra es un componente que se reutiliza 4 veces
-- Los estilos están organizados aparte del código, no mezclados en el mismo lugar
-
-## Cómo correr la app
+Primero se instalan las dependencias:
 
 ```bash
-cd 3-proyecto/starter
 pnpm install
+```
+
+Para abrirlo en el navegador web:
+
+```bash
+pnpm run web
+```
+
+Después se inicia la aplicación con Expo:
+
+```bash
 pnpm start
 ```
 
-Y luego escanear el código QR con la app Expo Go desde el celular.
+Y luego se escanea el código QR desde el celular con la aplicación **Expo Go**.
 
-## Notas
+---
 
-- Las fotos de las obras están guardadas dentro del proyecto (carpeta `0-assets/`), no se descargan de internet.
-- Hay un archivo `.gitignore` que evita subir carpetas pesadas e innecesarias (como `node_modules`) al repositorio.
+## ✅ Entregables realizados
+
+* Creación de proyecto Expo con TypeScript.
+* Uso de Core Components: `View`, `Text`, `Image`, `ScrollView` y `Pressable`.
+* Maquetación responsiva utilizando Flexbox.
+* Componente modular reutilizable `ItemCard`.
+* Catálogo de 4 obras maestras del museo con imágenes locales.
+* Botón interactivo de estrella para favoritos.
+* Diseño consistente en modo oscuro.
+
+Proyecto realizado para la **Semana 01 — React Native**.
