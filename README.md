@@ -85,43 +85,39 @@ Los iconos son de la librería `Ionicons`, manteniendo una interfaz moderna, lim
 ## 📂 Estructura de proyecto
 
 ```text
-week-05-networking_tanstack_query/
+
+├── 0-assets/
+│   ├── 01-tanstack-query-lifecycle.svg
+│   └── 02-cache-stale-fresh.svg
 │
-├── 3-proyecto/
-│   ├── README.md
+├── src/
+│   ├── hooks/
+│   │   └── useItems.ts
 │   │
-│   └── starter/
-│       ├── 0-assets/
-│       │   ├── 01-tanstack-query-lifecycle.svg
-│       │   └── 02-cache-stale-fresh.svg
-│       │
-│       ├── src/
-│       │   ├── hooks/
-│       │   │   └── useItems.ts
-│       │   │
-│       │   ├── navigation/
-│       │   │   ├── RootNavigator.tsx
-│       │   │   └── types.ts
-│       │   │
-│       │   ├── screens/
-│       │   │   ├── HomeScreen.tsx
-│       │   │   ├── DetailScreen.tsx
-│       │   │   └── CreateScreen.tsx
-│       │   │
-│       │   ├── services/
-│       │   │   └── api.ts
-│       │   │
-│       │   ├── theme/
-│       │   │   └── index.ts
-│       │   │
-│       │   └── types/
-│       │       └── index.ts
-│       │
-│       ├── app.json
-│       ├── App.tsx
-│       ├── package.json
-│       └── tsconfig.json
+│   ├── navigation/
+│   │   ├── RootNavigator.tsx
+│   │   └── types.ts
+│   │
+│   ├── screens/
+│   │   ├── HomeScreen.tsx
+│   │   ├── DetailScreen.tsx
+│   │   └── CreateScreen.tsx
+│   │
+│   ├── services/
+│   │   └── api.ts
+│   │
+│   ├── theme/
+│   │   └── index.ts
+│   │
+│   ├── types/
+│   │   └── index.ts
+│   │
+│   ├── app.json
+│   ├── App.tsx
+│   ├── package.json
+│   └── tsconfig.json
 ```
+
 
 Cada archivo tiene una función clara. La configuración de red y Axios está en `api.ts`, los hooks de TanStack Query para consultar y crear obras están en `useItems.ts`, la navegación en `RootNavigator.tsx` y las vistas en la carpeta `screens`.
 
