@@ -1,10 +1,10 @@
-# Proyecto Semana 05 — App de Obras de Arte con Networking y TanStack Query
+# Proyecto Semana 06 — App de Obras de Arte con Formularios y Validación Zod
 
 ## Descripción
 
-En esta semana se construyó una aplicación móvil que se conecta a internet para consultar y registrar obras de arte utilizando **TanStack Query** y **Axios**. Esto permite que la galería cargue las obras de forma rápida mediante memoria caché, que el usuario pueda actualizar la lista deslizando hacia abajo (*pull-to-refresh*) y que se puedan registrar nuevas obras en el catálogo con actualización inmediata en la pantalla.
+En esta semana se construyó una aplicación móvil que utiliza **React Hook Form** y **Zod** para la gestión y validación robusta de formularios. La aplicación permite registrar nuevas obras en la colección del museo y editar obras existentes, validando los datos en tiempo real con esquemas fuertemente tipados, mostrando mensajes de error claros y conectándose a la API mediante **TanStack Query** y **Axios**.
 
-El proyecto fue realizado utilizando React Native, Expo, TypeScript, Axios, TanStack Query y pnpm.
+El proyecto fue realizado utilizando React Native, Expo, TypeScript, React Hook Form, Zod, TanStack Query y pnpm.
 
 ---
 
@@ -12,134 +12,126 @@ El proyecto fue realizado utilizando React Native, Expo, TypeScript, Axios, TanS
 
 El dominio escogido para este proyecto es **Museo de Arte**.
 
-Cada obra tiene información como:
+Cada obra de arte cuenta con las siguientes propiedades validadas:
 
-* Nombre de la obra.
-* Artista / Autor.
-* Año en que fue creada.
-* Sala donde se encuentra.
-* Técnica utilizada.
-* Periodo histórico.
-* Descripción histórica de la obra.
-
-Algunas de las obras incluidas son:
-
-* La Mona Lisa.
-* La noche estrellada.
-* El grito.
-* Guernica.
-* Las meninas.
-* La persistencia de la memoria.
-* El nacimiento de Venus.
-* La creación de Adán.
-* La joven de la perla.
-* La ronda de noche.
+* **Nombre de la obra**: Título principal de la pieza artística (requerido, máx. 80 caracteres).
+* **Artista / Autor**: Creador de la obra (requerido, máx. 80 caracteres).
+* **Año de creación**: Año en que fue creada (número entero positivo).
+* **Sala del museo**: Ubicación física dentro del museo.
+* **Técnica**: Materiales y método utilizado (ej. *Óleo sobre lienzo*).
+* **Período histórico**: Movimiento artístico (ej. *Renacimiento*, *Barroco*).
+* **Descripción histórica**: Contexto e información detallada de la obra.
 
 ---
 
-## Conexión a Internet y TanStack Query
+## Formularios y Validación con Zod
 
-Para conectar la aplicación con la API y gestionar los datos se utilizó **Axios** y **TanStack Query**, lo que permite:
+Para el manejo y validación de datos se implementaron las mejores prácticas:
 
-* **Consultar la lista de obras**: Descargar el catálogo de obras desde la API y guardarlo en memoria caché para que no vuelva a tardar en cargar.
-* **Consultar el detalle por ID**: Obtener la ficha técnica completa y la historia detallada de cada obra.
-* **Registrar nuevas obras**: Enviar nuevas obras a la colección mediante un formulario y verlas reflejadas de inmediato en la galería.
-* **Actualizar deslizando (Pull-to-refresh)**: Recargar la lista de obras en cualquier momento arrastrando la pantalla hacia abajo.
-* **Estados de carga y error**: Mostrar un indicador visual mientras se descargan los datos y un mensaje amigable con botón para reintentar si no hay conexión.
+* **Esquemas Tipados con Zod (`itemSchema.ts`)**: Validación declarativa de tipos, campos obligatorios, longitudes mínimas/máximas y coerciones numéricas.
+* **Inferencia automática de tipos**: Tipado estricto `ItemFormData` inferido automáticamente desde el esquema Zod sin duplicar código.
+* **Componente Modular `FormField`**: Encapsula `Controller` de React Hook Form, `TextInput` nativo y visualización dinámica de mensajes de error.
+* **Validación en tiempo real y al enviar**: Los errores se muestran de inmediato debajo de cada campo con formato visual destacado.
+* **Formularios de Creación y Edición**:
+  * **Crear (`CreateScreen`)**: Formulario limpio con valores iniciales vacíos y mutación `POST`.
+  * **Editar (`EditScreen`)**: Carga automática de los datos existentes de la obra con `useItemById` y sincronización mediante `reset()` en `useEffect`.
 
 ---
 
 ## Pantallas de la app
 
-La aplicación cuenta con navegación mediante Stack Navigator y un formulario modal:
+La aplicación cuenta con navegación mediante Stack Navigator:
 
 ### 1. Pantalla Galería (Inicio - HomeScreen)
-Muestra el catálogo de obras de arte en tarjetas con el nombre de la obra, el artista, el año, la sala y el periodo artístico. Cuenta con un contador dinámico de obras, opción de deslizar para actualizar y un botón `+` en la parte superior para registrar una nueva obra. Al pulsar cualquier tarjeta se navega al detalle.
+Muestra la lista de obras de arte del museo obtenidas desde la API con TanStack Query. Cada tarjeta cuenta con acciones para ver la obra, editarla o registrar una nueva obra desde el botón superior `+`.
 
-### 2. Pantalla de Detalle de la Obra (DetailScreen)
-Muestra toda la ficha técnica de la obra seleccionada:
-* Nombre, artista y año de creación.
-* Sala donde está exhibida, técnica utilizada y periodo histórico.
-* Sección con la **Descripción Histórica** detallada de la obra.
-* Botón interactivo para volver a la galería.
+### 2. Pantalla de Registro de Obra (CreateScreen)
+Formulario controlado con React Hook Form para agregar una nueva obra al museo:
+* Campos validados con Zod para nombre, artista, año, sala, técnica y descripción.
+* Bloqueo del botón y spinner mientras se procesa el envío (`isSubmitting`).
+* Redirección automática a la galería al completar el guardado con éxito.
 
-### 3. Pantalla de Registro de Obra (CreateScreen)
-Un formulario modal que permite agregar una nueva obra a la colección:
-* Campos para ingresar el nombre, autor, año, período, sala, técnica y descripción.
-* Validación para no enviar campos vacíos.
-* Botón de guardado con indicador de carga mientras se envía a la red.
-* Cierre automático y actualización inmediata de la galería al guardar.
+### 3. Pantalla de Edición de Obra (EditScreen)
+Formulario para modificar una obra existente:
+* Carga previa de los datos de la obra mediante su ID.
+* Permite actualizar cualquier campo manteniendo las mismas reglas de validación Zod.
+* Envío de la mutación asíncrona y refresco instantáneo de la galería.
+
+---
+
+## Capturas de pantalla
+
+### Captura 1 — Galería de Obras (HomeScreen)
+<img src="./0-assets/cap1.jpeg" alt="Galería de Obras" width="300">
+
+### Captura 2 — Formulario de Registro (CreateScreen)
+<img src="./0-assets/cap2.jpeg" alt="Formulario de Registro" width="300">
+
+### Captura 3 — Formulario de Edición (EditScreen)
+<img src="./0-assets/cap3.jpeg" alt="Formulario de Edición" width="300">
 
 ---
 
 ## Diseño
 
-Para el diseño mantuve el estilo oscuro de las semanas anteriores, utilizando tonos oscuros para el fondo y las tarjetas.
+Para el diseño mantuve el estilo oscuro elegante de las semanas anteriores, utilizando tonos oscuros para el fondo y las tarjetas.
 
-También utilicé el color azul claro (`#61DAFB`) para resaltar nombres, botones, insignias y elementos interactivos.
-
-Los iconos son de la librería `Ionicons`, manteniendo una interfaz moderna, limpia y consistente en dispositivos Android e iOS.
+También utilicé el color azul claro (`#61DAFB`) para resaltar botones principales, campos activos e insignias, y color rojo suave para los mensajes de error de validación.
 
 ---
 
 ## 📂 Estructura de proyecto
 
 ```text
-week-05-networking_tanstack_query/
+├── 0-assets/
+│   ├── cap1.jpeg
+│   ├── cap2.jpeg
+│   └── cap3.jpeg
 │
-├── 3-proyecto/
-│   ├── README.md
+├── src/
+│   ├── components/
+│   │   └── FormField.tsx
 │   │
-│   └── starter/
-│       ├── 0-assets/
-│       │   ├── 01-tanstack-query-lifecycle.svg
-│       │   └── 02-cache-stale-fresh.svg
-│       │
-│       ├── src/
-│       │   ├── hooks/
-│       │   │   └── useItems.ts
-│       │   │
-│       │   ├── navigation/
-│       │   │   ├── RootNavigator.tsx
-│       │   │   └── types.ts
-│       │   │
-│       │   ├── screens/
-│       │   │   ├── HomeScreen.tsx
-│       │   │   ├── DetailScreen.tsx
-│       │   │   └── CreateScreen.tsx
-│       │   │
-│       │   ├── services/
-│       │   │   └── api.ts
-│       │   │
-│       │   ├── theme/
-│       │   │   └── index.ts
-│       │   │
-│       │   └── types/
-│       │       └── index.ts
-│       │
-│       ├── app.json
-│       ├── App.tsx
-│       ├── package.json
-│       └── tsconfig.json
+│   ├── hooks/
+│   │   └── useItems.ts
+│   │
+│   ├── navigation/
+│   │   ├── RootNavigator.tsx
+│   │   └── types.ts
+│   │
+│   ├── schemas/
+│   │   └── itemSchema.ts
+│   │
+│   ├── screens/
+│   │   ├── HomeScreen.tsx
+│   │   ├── CreateScreen.tsx
+│   │   └── EditScreen.tsx
+│   │
+│   ├── services/
+│   │   └── api.ts
+│   │
+│   ├── theme/
+│   │   └── index.ts
+│   │
+│   └── types/
+│       └── index.ts
+│
+├── app.json
+├── App.tsx
+├── package.json
+└── tsconfig.json
 ```
 
-Cada archivo tiene una función clara. La configuración de red y Axios está en `api.ts`, los hooks de TanStack Query para consultar y crear obras están en `useItems.ts`, la navegación en `RootNavigator.tsx` y las vistas en la carpeta `screens`.
+Cada archivo tiene una función clara. Las reglas de validación están en `schemas/itemSchema.ts`, el componente reutilizable en `components/FormField.tsx`, los hooks de conexión en `hooks/useItems.ts` y las pantallas en `screens/`.
 
 ---
 
 ## ⚙️ Cómo ejecutar el proyecto
 
-Primero se entra a la carpeta del proyecto y se instalan las dependencias:
+Primero se instalan las dependencias:
 
 ```bash
-cd 3-proyecto/starter
 pnpm install
-```
-
-Para abrirlo en el navegador web:
-
-```bash
-pnpm run web
 ```
 
 Después se inicia la aplicación con Expo:
@@ -154,17 +146,13 @@ Y luego se escanea el código QR desde el celular con la aplicación **Expo Go**
 
 ## ✅ Entregables realizados
 
-* Configuración del cliente Axios centralizado con interceptor de errores.
-* Proveedor `QueryClientProvider` configurado en la raíz de la aplicación.
-* Hook `useItems()` con `useQuery` para consultar la lista de obras desde la API.
-* Hook `useItemById()` con `useQuery` para consultar el detalle de una obra por ID.
-* Hook `useCreateItem()` con `useMutation` para registrar nuevas obras en el catálogo.
-* Actualización automática e invalidación de caché (`invalidateQueries`).
-* Pull-to-refresh en la lista principal para recargar datos con `refetch`.
-* Manejo de estados de carga (`ActivityIndicator`), error con botón de reintento y estado vacío.
-* Descripciones históricas completas integradas en las 10 obras de arte.
-* Pantallas `HomeScreen`, `DetailScreen` y modal `CreateScreen` navegables.
-* Diseño en modo oscuro consistente con las semanas anteriores.
+* Esquema de validación Zod (`itemSchema.ts`) adaptado al dominio Museo de Arte.
+* Componente reutilizable `FormField` que encapsula `Controller` + `TextInput` + errores inline.
+* Pantalla `CreateScreen` con validación Zod y mutación `useCreateItem`.
+* Pantalla `EditScreen` con carga de `defaultValues` (`useItemById` + `reset()`) y mutación `useUpdateItem`.
+* Mensajes de error en español visibles bajo cada campo con datos inválidos.
+* Estados de carga deshabilitando el botón y mostrando spinner durante `isSubmitting`.
+* Diseño consistente en modo oscuro.
 * Proyecto realizado con TypeScript sin errores de tipado.
 
-Proyecto realizado para la **Semana 05 — React Native**.
+Proyecto realizado para la **Semana 06 — React Native**.

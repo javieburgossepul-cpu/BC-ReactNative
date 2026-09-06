@@ -1,24 +1,33 @@
 // src/types/index.ts
-// Interface del dominio Museo / Obras de arte para la Semana 05 (TanStack Query + API).
+// Tipos de datos del dominio Museo de Arte
 
 export interface Item {
-  id: string | number;
-  name: string;
-  artist: string;
-  year: number;
-  room: string;
-  technique: string;
-  period: string;
-  description: string;
-}
-
-// Payload para crear una nueva obra de arte mediante POST con useMutation
-export type CreateItemPayload = Omit<Item, 'id'>;
-
-// Interfaz para la respuesta cruda de la API (en caso de usar JSONPlaceholder /posts)
-export interface ApiPost {
   id: number;
   title: string;
+  artist?: string;
+  year?: number;
+  room?: string;
+  body: string;
+  userId?: number;
+}
+
+// Payload para crear un ítem nuevo (sin id — lo asigna el servidor)
+export interface CreateItemPayload {
+  title: string;
+  artist?: string;
+  year?: number;
+  room?: string;
+  body: string;
+  userId?: number;
+}
+
+// Payload para actualizar (id requerido + campos editables)
+export interface UpdateItemPayload {
+  id: number;
+  title: string;
+  artist?: string;
+  year?: number;
+  room?: string;
   body: string;
   userId?: number;
 }

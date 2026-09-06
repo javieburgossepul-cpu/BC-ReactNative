@@ -1,18 +1,11 @@
 {
   "expo": {
-    "name": "Week 05 — TanStack Query",
-    "slug": "week05-tanstack-query",
+    "name": "week-06-formularios",
+    "slug": "week-06-formularios",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": false
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#0d1117"
-      }
-    }
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#111827" } }
   }
 }

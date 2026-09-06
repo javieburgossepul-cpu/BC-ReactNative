@@ -1,32 +1,22 @@
-// src/services/api.ts
-// Instancia Axios centralizada para el proyecto de la Semana 05.
+// src/services/api.ts — Instancia centralizada de Axios
 
 import axios from 'axios';
 
-// Declaración de tipos segura para process.env en Expo/React Native
-declare const process: { env: { EXPO_PUBLIC_API_URL?: string } } | undefined;
-
-// URL base de la API (JSONPlaceholder por defecto o variable de entorno Expo)
-const API_BASE_URL =
-  (typeof process !== 'undefined' && process?.env?.EXPO_PUBLIC_API_URL) ||
-  'https://jsonplaceholder.typicode.com';
+const envBaseUrl = typeof globalThis !== 'undefined' && (globalThis as any).process?.env?.EXPO_PUBLIC_API_URL;
 
 export const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  baseURL: envBaseUrl || 'https://jsonplaceholder.typicode.com',
+  timeout: 10_000,
+  headers: { 'Content-Type': 'application/json' },
 });
 
-// Interceptor de respuesta para logging y manejo centralizado de errores
+// Interceptor global de errores
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (__DEV__) {
-      console.error('[API Error]', error.response?.status, error.config?.url, error.message);
+      console.error('[API error]', error.response?.status, error.config?.url);
     }
     return Promise.reject(error);
-  }
+  },
 );

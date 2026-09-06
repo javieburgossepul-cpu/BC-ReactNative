@@ -1,7 +1,7 @@
-// src/screens/CreateScreen.tsx
-// Formulario para crear una nueva obra de arte con React Hook Form + Zod.
+// src/screens/EditScreen.tsx
+// Formulario para editar una obra existente con React Hook Form + Zod.
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -12,8 +12,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -21,33 +22,53 @@ import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
 import { FormField } from '../components/FormField';
 import { itemSchema, type ItemFormData } from '../schemas/itemSchema';
-import { useCreateItem } from '../hooks/useItems';
+import { useItemById, useUpdateItem } from '../hooks/useItems';
 
-type CreateNavProp = NativeStackNavigationProp<RootStackParamList, 'Create'>;
+type EditNavProp = NativeStackNavigationProp<RootStackParamList, 'Edit'>;
+type EditRouteProp = RouteProp<RootStackParamList, 'Edit'>;
 
-export function CreateScreen(): React.JSX.Element {
-  const navigation = useNavigation<CreateNavProp>();
+export function EditScreen(): React.JSX.Element {
+  const navigation = useNavigation<EditNavProp>();
+  const route = useRoute<EditRouteProp>();
+  const { id } = route.params;
+
+  const { data: item, isLoading } = useItemById(id);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<ItemFormData>({
     resolver: zodResolver(itemSchema),
     defaultValues: {
       title: '',
       artist: '',
-      year: new Date().getFullYear(),
+      year: 1900,
       room: '',
       body: '',
     },
   });
 
-  const { mutate: createItem } = useCreateItem();
+  // Cuando se cargan los datos del servidor, rellenamos el formulario con reset()
+  useEffect(() => {
+    if (item) {
+      reset({
+        title: item.title,
+        artist: item.artist || 'Maestro Anónimo',
+        year: item.year || 1900 + (item.id * 7) % 120,
+        room: item.room || `Sala ${(item.id % 12) + 1}`,
+        body: item.body || '',
+      });
+    }
+  }, [item, reset]);
+
+  const { mutate: updateItem, isPending } = useUpdateItem();
 
   function onSubmit(data: ItemFormData): void {
-    createItem(
+    updateItem(
       {
+        id: Number(id),
         title: data.title,
         artist: data.artist,
         year: data.year,
@@ -61,7 +82,15 @@ export function CreateScreen(): React.JSX.Element {
     );
   }
 
-  const canSubmit = !isSubmitting;
+  const canSubmit = !isSubmitting && !isPending && isDirty;
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={COLORS.accent} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -74,7 +103,7 @@ export function CreateScreen(): React.JSX.Element {
         keyboardShouldPersistTaps="handled"
       >
         <Text style={styles.hint}>
-          Ingresa los datos de la obra maestra para incorporarla a la colección.
+          Modifica los campos de la obra seleccionada y guarda los cambios.
         </Text>
 
         <FormField
@@ -131,10 +160,10 @@ export function CreateScreen(): React.JSX.Element {
             onPress={handleSubmit(onSubmit)}
             disabled={!canSubmit}
           >
-            {isSubmitting ? (
+            {isSubmitting || isPending ? (
               <ActivityIndicator size="small" color={COLORS.background} />
             ) : (
-              <Text style={styles.buttonText}>Registrar Obra</Text>
+              <Text style={styles.buttonText}>Guardar Cambios</Text>
             )}
           </Pressable>
 
@@ -151,6 +180,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: COLORS.background },
   container: { flex: 1 },
   content: { padding: SPACING.lg, gap: SPACING.md, paddingBottom: SPACING.xxl },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.background },
   hint: { ...TYPOGRAPHY.caption, fontStyle: 'italic' },
   actions: { gap: SPACING.sm, marginTop: SPACING.sm },
   button: {
