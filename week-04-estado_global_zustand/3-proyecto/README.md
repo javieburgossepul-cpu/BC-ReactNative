@@ -1,109 +1,180 @@
-# Proyecto Semana 04 — Estado Global con Zustand
+# Proyecto Semana 04 — App de Obras de Arte con Estado Global
 
-## 🎯 Objetivo
+## Descripción
 
-Construir una app con **navegación Tab + Stack** y **estado global Zustand** aplicado a tu dominio. La segunda pestaña debe mostrar ítems "guardados" o un "carrito" cuyo estado viene de un store Zustand compartido con la pantalla principal.
+En esta semana se construyó una aplicación móvil que utiliza **Zustand** para manejar el estado global de la aplicación. Esto permite que las obras que el usuario guarde como favoritas se sincronicen automáticamente en toda la app, actualicen el contador de la barra de navegación en tiempo real y no se borren al cerrar la aplicación gracias al almacenamiento local con AsyncStorage.
 
----
-
-## 📋 Tu Dominio Asignado
-
-**Dominio**: [El instructor te asignará tu dominio único al inicio del bootcamp]
-
-> 📌 Tu implementación debe ser coherente con tu dominio. No copies implementaciones de otros aprendices.
-
-### 💡 Ejemplos de Adaptación por Dominio
-
-| Dominio | Pestaña Items (Home) | Store Zustand | Pestaña Guardados |
-|---|---|---|---|
-| Biblioteca | Lista de libros | `useReadingListStore` | Lista de lectura |
-| Farmacia | Catálogo de medicamentos | `useCartStore` | Carrito de compra |
-| Gimnasio | Lista de rutinas | `useFavoritesStore` | Rutinas favoritas |
-| Restaurante | Menú del restaurante | `useOrderStore` | Mi pedido |
-| Cine | Cartelera actual | `useMyListStore` | Mi lista de pelis |
+El proyecto fue realizado utilizando React Native, Expo, TypeScript, Zustand y pnpm.
 
 ---
 
-## 🗂️ Estructura del Proyecto
+## Mi dominio
 
+El dominio escogido para este proyecto es **Museo de Arte**.
+
+Cada obra tiene información como:
+
+* Nombre de la obra.
+* Artista.
+* Año en que fue creada.
+* Sala donde se encuentra.
+* Técnica utilizada.
+* Periodo artístico.
+* Descripción de la obra.
+
+Algunas de las obras incluidas son:
+
+* La Mona Lisa.
+* La noche estrellada.
+* El grito.
+* Guernica.
+* La persistencia de la memoria.
+* Las meninas.
+* El nacimiento de Venus.
+* La creación de Adán.
+
+---
+
+## Estado Global y Favoritos
+
+Para manejar la información de las obras guardadas se utilizó **Zustand**, creando un almacén (*store*) global que permite:
+
+* **Guardar en favoritos**: Agregar una obra a la lista personal sin que se duplique.
+* **Quitar de favoritos**: Eliminar una obra de la lista desde el detalle, desde la galería o desde la pestaña de guardados.
+* **Vaciar lista**: Borrar todas las obras guardadas con un solo botón.
+* **Persistencia**: Las obras guardadas se mantienen guardadas en el teléfono incluso si se cierra y se vuelve a abrir la app.
+* **Contador en vivo**: El icono de la pestaña de favoritos muestra un número con la cantidad de obras guardadas en tiempo real.
+
+---
+
+## Pantallas de la app
+
+La aplicación cuenta con dos pestañas en la barra inferior y navegación a detalle:
+
+### 1. Pestaña Galería (Colección)
+Muestra el catálogo completo de las obras del museo en tarjetas con su nombre, artista, año, sala y periodo. Cada tarjeta cuenta con un botón rápido para guardarla directamente en favoritos y al tocar la tarjeta se abre la pantalla de detalle.
+
+### 2. Pantalla de Detalle de la Obra
+Muestra toda la ficha técnica de la obra seleccionada:
+* Nombre y artista con el año.
+* Sala donde está exhibida, técnica y periodo.
+* Descripción histórica completa.
+* Un botón para **Guardar en Favoritos** o **Quitar de Favoritos** que actualiza el estado de la app al instante.
+
+### 3. Pestaña Guardadas (Favoritos)
+Muestra la lista de obras que el usuario ha guardado como favoritas. Permite eliminar obras de forma individual o vaciar toda la lista. Si no hay obras guardadas, muestra un mensaje invitando al usuario a explorar la galería.
+
+---
+
+## Capturas de pantalla
+
+### Captura 1 — Lista de Obras (Home)
+<img src="./starter/0-assets/cap1.jpeg" alt="Lista de Obras" width="300">
+
+### Captura 2 — Detalle de una Obra (Detail)
+<img src="./starter/0-assets/cap2.jpeg" alt="Detalle de Obra" width="300">
+
+### Captura 3 — Pestaña de Guardadas (Saved)
+<img src="./starter/0-assets/cap3.jpeg" alt="Obras Guardadas" width="300">
+
+---
+
+## Diseño
+
+Para el diseño mantuve el estilo oscuro de las semanas anteriores, utilizando tonos oscuros para el fondo y las tarjetas.
+
+También utilicé el color azul claro (`#61DAFB`) para resaltar nombres, botones, insignias y elementos activos de la barra de navegación.
+
+La barra de pestañas inferior tiene iconos interactivos de la librería `Ionicons` que cambian cuando una pestaña está seleccionada y muestran el número de obras guardadas.
+
+---
+
+## 📂 Estructura de proyecto
+
+```text
+week-04-estado_global_zustand/
+│
+├── 3-proyecto/
+│   ├── README.md
+│   │
+│   └── starter/
+│       ├── 0-assets/
+│       │   ├── cap1.jpeg
+│       │   ├── cap2.jpeg
+│       │   └── cap3.jpeg
+│       ├── src/
+│       │   ├── data/
+│       │   │   └── mockData.ts
+│       │   │
+│       │   ├── navigation/
+│       │   │   ├── RootNavigator.tsx
+│       │   │   └── types.ts
+│       │   │
+│       │   ├── screens/
+│       │   │   ├── HomeScreen.tsx
+│       │   │   ├── DetailScreen.tsx
+│       │   │   └── SavedScreen.tsx
+│       │   │
+│       │   ├── stores/
+│       │   │   └── savedStore.ts
+│       │   │
+│       │   ├── theme/
+│       │   │   └── index.ts
+│       │   │
+│       │   └── types/
+│       │       └── index.ts
+│       │
+│       ├── app.json
+│       ├── App.tsx
+│       ├── package.json
+│       └── tsconfig.json
 ```
-starter/
-├── App.tsx
-├── app.json
-├── package.json
-├── tsconfig.json
-└── src/
-    ├── navigation/
-    │   ├── RootNavigator.tsx    ← Tab + Stack anidado
-    │   └── types.ts             ← RootTabParamList, HomeStackParamList
-    ├── screens/
-    │   ├── HomeScreen.tsx       ← lista con botón "Guardar"
-    │   ├── DetailScreen.tsx     ← detalle + botón "Guardar/Quitar"
-    │   └── SavedScreen.tsx      ← segunda pestaña (desde el store)
-    ├── stores/
-    │   ├── itemsStore.ts        ← store del detalle seleccionado
-    │   └── savedStore.ts        ← store de ítems guardados (TODO)
-    ├── data/
-    │   └── mockData.ts
-    ├── types/
-    │   └── index.ts
-    └── theme/
-        └── index.ts
-```
+
+Cada archivo tiene una función clara. Los datos de las obras están en `mockData.ts`, el estado global está en `savedStore.ts`, la navegación en `RootNavigator.tsx` y las vistas en la carpeta `screens`.
 
 ---
 
-## ✅ Requisitos Funcionales
+## ⚙️ Cómo ejecutar el proyecto
 
-1. **Tab Navigator** con al menos dos pestañas: `Home` y `Guardados`
-2. **Stack anidado en Home**: lista → detalle con params tipados
-3. **Store Zustand del carrito/guardados**: métodos para agregar, eliminar y limpiar
-4. **Badge en tab** con conteo en tiempo real desde el store (sin prop drilling)
-5. **Detalle** muestra botón "Guardar" / "Quitar" que lee y escribe el store
-
-### Requisitos de Código
-
-- Creado con `create<Interface>()` sin `any`
-- Selectores específicos (no `useStore()` sin selector)
-- Mínimo 2 acciones en el store de guardados
-- TypeScript sin errores de compilación
-
----
-
-## 🚀 Cómo ejecutar
+Primero se entra a la carpeta del proyecto y se instalan las dependencias:
 
 ```bash
-cd starter
+cd 3-proyecto/starter
 pnpm install
+```
+
+Para abrirlo en el navegador web:
+
+```bash
+pnpm run web
+```
+
+Después se inicia la aplicación con Expo:
+
+```bash
 pnpm start
 ```
 
----
-
-## 🛠️ Entregables
-
-1. App con Tab + Stack funcional y estado Zustand compartido entre pestañas
-2. Badge en el tab bar actualizado en tiempo real
-3. TypeScript sin errores, sin `any`
-4. Código y datos adaptados a tu dominio asignado
-5. Capturas de pantalla de Home, Detail y Saved screens
+Y luego se escanea el código QR desde el celular con la aplicación **Expo Go**.
 
 ---
 
-## 📊 Criterios de Evaluación
+## ✅ Entregables realizados
 
-Ver [rubrica-evaluacion.md](../rubrica-evaluacion.md) — sección **Producto 📦 (30%)**
-pnpm start
-```
+* Ejercicio 01 (Store básico con contador y tareas) completado y funcionando.
+* Ejercicio 02 (Persistencia con AsyncStorage) completado y funcionando.
+* Proyecto final con Tab Navigator (Galería y Guardadas).
+* Store global con Zustand para manejar favoritos compartido entre pantallas.
+* Contador numérico en la barra inferior actualizado en tiempo real.
+* Navegación de lista a detalle pasando los datos de la obra.
+* Botón interactivo para guardar y quitar obras de favoritos.
+* Persistencia para mantener las obras guardadas al cerrar la app.
+* Capturas de pantalla de Home, Detail y Saved screens añadidas.
+* Diseño en modo oscuro consistente con las semanas anteriores.
+* Proyecto realizado con TypeScript sin errores de tipado.
 
-## 🛠️ Entregables
+Proyecto realizado para la **Semana 04 — React Native**.
 
-1. App funcional en simulador iOS y/o Android
-2. Código adaptado a tu dominio
-3. README actualizado con descripción de tu implementación
 
-## 📊 Criterios de Evaluación
-
-Ver [../rubrica-evaluacion.md](../rubrica-evaluacion.md)
 
 

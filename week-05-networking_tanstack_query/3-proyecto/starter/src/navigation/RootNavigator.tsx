@@ -1,9 +1,10 @@
 // src/navigation/RootNavigator.tsx
-// Stack Navigator con tres pantallas: Home, Detail y Create.
+// Stack Navigator con tres pantallas: Galería (Home), Detalle (Detail) y Nueva Obra (Create).
 
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Pressable, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { HomeScreen } from '../screens/HomeScreen';
 import { DetailScreen } from '../screens/DetailScreen';
@@ -13,15 +14,12 @@ import type { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const headerStyle = { backgroundColor: COLORS.surface } as const;
-const headerTitleStyle = { color: COLORS.textPrimary, fontWeight: '600' as const };
-
 export function RootNavigator(): React.JSX.Element {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle,
-        headerTitleStyle,
+        headerStyle: { backgroundColor: COLORS.surface },
+        headerTitleStyle: { color: COLORS.textPrimary, fontWeight: '600' },
         headerTintColor: COLORS.accent,
         contentStyle: { backgroundColor: COLORS.background },
       }}
@@ -30,13 +28,14 @@ export function RootNavigator(): React.JSX.Element {
         name="Home"
         component={HomeScreen}
         options={({ navigation }) => ({
-          // TODO: cambiar el título al nombre de tu dominio
-          title: 'Ítems',
+          title: 'Galería de Arte',
           headerRight: () => (
-            <Pressable onPress={() => navigation.navigate('Create')}>
-              <Text style={{ color: COLORS.accent, fontSize: 24, fontWeight: '300' }}>
-                +
-              </Text>
+            <Pressable
+              style={styles.addButton}
+              onPress={() => navigation.navigate('Create')}
+              accessibilityLabel="Agregar nueva obra de arte"
+            >
+              <Ionicons name="add-circle" size={26} color={COLORS.accent} />
             </Pressable>
           ),
         })}
@@ -44,13 +43,26 @@ export function RootNavigator(): React.JSX.Element {
       <Stack.Screen
         name="Detail"
         component={DetailScreen}
-        options={({ route }) => ({ title: route.params.name })}
+        options={({ route }) => ({
+          title: route.params.name,
+        })}
       />
       <Stack.Screen
         name="Create"
         component={CreateScreen}
-        options={{ title: 'Nuevo ítem', presentation: 'modal' }}
+        options={{
+          title: 'Nueva Obra de Arte',
+          presentation: 'modal',
+        }}
       />
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  addButton: {
+    padding: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

@@ -1,41 +1,31 @@
 // src/services/api.ts
-// Instancia Axios centralizada para el proyecto.
-// TODO: configurar la baseURL de tu API real.
+// Instancia Axios centralizada para el proyecto de la Semana 05.
 
 import axios from 'axios';
 
-// ============================================================
-// BASE URL
-// ============================================================
-// TODO: reemplaza esta URL por la de tu API del dominio.
-// Opciones rápidas para practicar:
-//   - JSONPlaceholder: https://jsonplaceholder.typicode.com  (solo /posts, /users, etc.)
-//   - MockAPI: https://mockapi.io  (crea tu propio endpoint con los campos de tu dominio)
-//   - json-server: instala localmente y corre con `pnpm dlx json-server db.json`
+// Declaración de tipos segura para process.env en Expo/React Native
+declare const process: { env: { EXPO_PUBLIC_API_URL?: string } } | undefined;
 
-// Expo expone variables de entorno con prefijo EXPO_PUBLIC_
-// ej. en .env.local: EXPO_PUBLIC_API_URL=https://tu-api.com
+// URL base de la API (JSONPlaceholder por defecto o variable de entorno Expo)
 const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL ?? 'https://jsonplaceholder.typicode.com';
+  (typeof process !== 'undefined' && process?.env?.EXPO_PUBLIC_API_URL) ||
+  'https://jsonplaceholder.typicode.com';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10_000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
 });
 
-// ============================================================
-// INTERCEPTOR DE RESPUESTA — manejo global de errores
-// ============================================================
+// Interceptor de respuesta para logging y manejo centralizado de errores
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // log de red para debugging en desarrollo
     if (__DEV__) {
-      console.error('[API Error]', error.response?.status, error.config?.url);
+      console.error('[API Error]', error.response?.status, error.config?.url, error.message);
     }
     return Promise.reject(error);
   }

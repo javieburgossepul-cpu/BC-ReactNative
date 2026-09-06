@@ -1,83 +1,52 @@
-# Proyecto Semana 01 — App de Tarjetas
+# Semana 01 — Core Components y Flexbox
 
-> **Semana 01 — Fundamentos RN** | Tiempo estimado: 3h
+**Dominio asignado: Museo**
 
-## 🎯 Objetivo
+## ¿Qué se aprendi esta semana?
 
-Construir una app de pantalla única que muestre una lista de tarjetas usando los Core Components y Flexbox. La app debe adaptarse al **dominio que te asignó el instructor**.
+- Crear un proyecto en Expo y correrlo en el celular con la app Expo Go
+- Usar los componentes básicos de React Native: vistas, textos, imágenes, listas con scroll y botones
+- Acomodar los elementos en pantalla usando Flexbox (filas, columnas, alineación)
+- Darle estilo a la app manteniendo un tema de color consistente
+- Entender en qué se diferencia React Native de React para páginas web
 
-## 📋 Tu Dominio Asignado
-
-**Dominio**: _El instructor te asignará tu dominio al inicio del bootcamp._
-
-Cada aprendiz trabaja sobre un dominio único para evitar copias y fomentar implementaciones originales.
-
-## 💡 Ejemplos de Adaptación por Dominio
-
-| Dominio | Elemento | Datos en la tarjeta |
-| ------- | -------- | ------------------- |
-| 📖 Biblioteca | Libro | Título, autor, año, portada |
-| 💊 Farmacia | Medicamento | Nombre, principio activo, precio |
-| 🏋️ Gimnasio | Miembro | Nombre, plan, fecha de vencimiento |
-| 🍽️ Restaurante | Platillo | Nombre, precio, descripción |
-| 🏥 Hospital | Médico | Nombre, especialidad, consultorio |
-| 🎥 Cine | Película | Título, género, director, estreno |
-| ✈️ Agencia de viajes | Destino | Ciudad, país, precio, imagen |
-| 🏦 Banco | Cuenta | Tipo, número (enmascarado), saldo |
-
-## ✅ Requisitos Funcionales
-
-1. **Pantalla principal** con ScrollView o lista de tarjetas
-2. **Mínimo 3 tarjetas** con datos coherentes al dominio
-3. Cada tarjeta debe mostrar:
-   - Una imagen (local o URL)
-   - Al menos 2 textos con estilos distintos (nombre, subtítulo)
-   - Una acción (`Pressable`) con feedback visual
-4. **Header** de la app con el nombre del dominio
-5. Estilos con `StyleSheet.create` (sin estilos inline)
-6. TypeScript: interfaces definidas para los datos del dominio
-
-## 📁 Estructura del starter
+## Estructura de la carpeta
 
 ```
-starter/
-├── App.tsx               # Punto de entrada
-├── package.json          # Dependencias exactas
-├── tsconfig.json         # Configuración TypeScript
-├── app.json              # Configuración Expo
-└── src/
-    ├── types/
-    │   └── index.ts      # Interfaz del elemento del dominio
-    ├── data/
-    │   └── mockData.ts   # Datos de ejemplo (mínimo 4 elementos)
-    ├── components/
-    │   └── ItemCard.tsx  # Componente tarjeta reutilizable
-    └── screens/
-        └── HomeScreen.tsx # Pantalla principal con la lista
+week-01-core_components_y_flexbox/
+├── 1-teoria/        # Lecturas de la semana
+├── 2-practicas/     # Ejercicios guiados
+└── 3-proyecto/      # App final: Museo
 ```
 
-## 🚀 Cómo ejecutar
+## El proyecto: Museo 
+
+Es una app de una sola pantalla que muestra una colección de obras de arte, como si fuera un catálogo del museo.
+
+**Qué hace la app:**
+
+- Muestra un encabezado con el nombre del museo y cuántas obras hay
+- Lista 4 obras famosas (La Gioconda, La noche estrellada, El grito, Las meninas), cada una con su imagen, nombre, artista, año y sala donde está exhibida
+- Cada obra tiene un botón de estrella para marcarla como favorita
+- Se puede tocar cada tarjeta y hacer scroll para ver todas
+
+**Cómo está armada por dentro:**
+
+- Los datos de las obras están separados del diseño, para que sea fácil agregar o cambiar obras
+- La tarjeta de cada obra es un componente que se reutiliza 4 veces
+- Los estilos están organizados aparte del código, no mezclados en el mismo lugar
+
+## Cómo correr la app
 
 ```bash
-cd starter
+cd 3-proyecto/starter
 pnpm install
 pnpm start
 ```
 
-## 🛠️ Entregables
+Y luego escanear el código QR con la app Expo Go desde el celular.
 
-1. App funcional en simulador iOS y/o Android
-2. Mínimo 3 tarjetas con datos de tu dominio
-3. Código subido al repositorio con tu nombre de dominio en el `app.json`
-4. Screenshot o grabación de la app en simulador
+## Notas
 
-## 📊 Criterios de Evaluación
-
-Ver [../rubrica-evaluacion.md](../rubrica-evaluacion.md)
-
-## 📌 Restricciones
-
-- ❌ No usar `position: 'absolute'` (solo Flexbox esta semana)
-- ❌ No usar ninguna librería de UI externa (solo componentes nativos de RN)
-- ❌ No usar estilos inline (`style={{ ... }}` directo en JSX)
-- ✅ Todo el código en TypeScript con tipos explícitos
+- Las fotos de las obras están guardadas dentro del proyecto (carpeta `0-assets/`), no se descargan de internet.
+- Hay un archivo `.gitignore` que evita subir carpetas pesadas e innecesarias (como `node_modules`) al repositorio.

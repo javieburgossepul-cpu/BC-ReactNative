@@ -1,11 +1,11 @@
 // src/navigation/types.ts
-// Tipos de los parámetros de navegación del proyecto.
+// Tipos tipados de la navegación para el Stack Navigator.
 
 export type RootStackParamList = {
-  // Lista principal
+  // Pantalla principal: Galería de Obras de Arte
   Home: undefined;
-  // Detalle — recibe el id y nombre para el header
+  // Ficha técnica: recibe el id y el nombre de la obra para el Header
   Detail: { id: string | number; name: string };
-  // Formulario de creación
+  // Modal para agregar una nueva obra de arte
   Create: undefined;
 };

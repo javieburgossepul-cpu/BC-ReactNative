@@ -1,10 +1,10 @@
 // src/screens/CreateScreen.tsx
-// Pantalla modal para crear un nuevo ítem.
-// El aprendiz debe conectar useMutation y manejar el retorno al listado.
+// Modal para registrar una nueva obra de arte en la API mediante useCreateItem (useMutation).
 
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -16,49 +16,61 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
 
 import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '../theme';
 import type { RootStackParamList } from '../navigation/types';
-
-// TODO: importar el hook de creación
-// import { useCreateItem } from '../hooks/useItems';
+import { useCreateItem } from '../hooks/useItems';
 
 type CreateNavProp = NativeStackNavigationProp<RootStackParamList, 'Create'>;
-
-// ============================================================
-// PANTALLA: CreateScreen
-// ============================================================
 
 export function CreateScreen(): React.JSX.Element {
   const navigation = useNavigation<CreateNavProp>();
 
-  // Campos del formulario — adapta al dominio asignado
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  // Campos del formulario adaptados al dominio Museo de Arte
+  const [name, setName] = useState('');
+  const [artist, setArtist] = useState('');
+  const [year, setYear] = useState('');
+  const [room, setRoom] = useState('');
+  const [technique, setTechnique] = useState('');
+  const [period, setPeriod] = useState('');
+  const [description, setDescription] = useState('');
 
-  // TODO: conectar useMutation para crear el ítem
-  // ─────────────────────────────────────────────
-  // const { mutate: createItem, isPending } = useCreateItem();
-  //
-  // Placeholder en tanto se completa el TODO:
-  const isPending = false;
+  // Mutación de TanStack Query
+  const { mutate: createItem, isPending } = useCreateItem();
 
   function handleSubmit(): void {
-    if (!title.trim()) return;
+    if (!name.trim()) {
+      Alert.alert('Campo requerido', 'Por favor ingresa el nombre de la obra.');
+      return;
+    }
 
-    // TODO: llamar mutate con los datos del formulario
-    // ─────────────────────────────────────────────────
-    // createItem(
-    //   { title, body },
-    //   {
-    //     // onSuccess se ejecuta TRAS invalidateQueries del hook
-    //     onSuccess: () => navigation.goBack(),
-    //   },
-    // );
-    console.log('TODO: implementar createItem({ title, body })');
+    if (!artist.trim()) {
+      Alert.alert('Campo requerido', 'Por favor ingresa el nombre del artista.');
+      return;
+    }
+
+    const payload = {
+      name: name.trim(),
+      artist: artist.trim(),
+      year: parseInt(year.trim(), 10) || new Date().getFullYear(),
+      room: room.trim() || 'Sala de Adquisiciones Recientes',
+      technique: technique.trim() || 'Óleo sobre lienzo',
+      period: period.trim() || 'Arte Moderno',
+      description: description.trim() || 'Obra incorporada recientemente a la colección del museo.',
+    };
+
+    createItem(payload, {
+      onSuccess: () => {
+        navigation.goBack();
+      },
+      onError: (err) => {
+        Alert.alert('Error al guardar', err.message || 'No se pudo guardar la obra en el servidor.');
+      },
+    });
   }
 
-  const canSubmit = title.trim().length > 0 && !isPending;
+  const canSubmit = name.trim().length > 0 && artist.trim().length > 0 && !isPending;
 
   return (
     <KeyboardAvoidingView
@@ -70,39 +82,102 @@ export function CreateScreen(): React.JSX.Element {
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.sectionLabel}>Datos del nuevo ítem</Text>
+        <View style={styles.headerInfo}>
+          <Ionicons name="color-palette-outline" size={24} color={COLORS.accent} />
+          <Text style={styles.sectionLabel}>Registro de Nueva Obra</Text>
+        </View>
 
-        {/* Campo nombre / título */}
+        {/* Nombre de la Obra */}
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>
-            Nombre{' '}
-            <Text style={styles.required}>*</Text>
+            Nombre de la Obra <Text style={styles.required}>*</Text>
           </Text>
           <TextInput
             style={styles.input}
-            value={title}
-            onChangeText={setTitle}
-            placeholder="Nombre del ítem…"
+            value={name}
+            onChangeText={setName}
+            placeholder="Ej: Impresión, sol naciente"
             placeholderTextColor={COLORS.textMuted}
             returnKeyType="next"
           />
         </View>
 
-        {/* TODO: agregar campos adicionales para tu dominio */}
-        {/* Por ejemplo:                                     */}
-        {/* <View style={styles.field}>                       */}
-        {/*   <Text style={styles.fieldLabel}>Precio</Text>  */}
-        {/*   <TextInput … />                                 */}
-        {/* </View>                                           */}
-
-        {/* Campo descripción / cuerpo (genérico) */}
+        {/* Artista */}
         <View style={styles.field}>
-          <Text style={styles.fieldLabel}>Descripción</Text>
+          <Text style={styles.fieldLabel}>
+            Artista / Autor <Text style={styles.required}>*</Text>
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={artist}
+            onChangeText={setArtist}
+            placeholder="Ej: Claude Monet"
+            placeholderTextColor={COLORS.textMuted}
+            returnKeyType="next"
+          />
+        </View>
+
+        {/* Fila: Año y Período */}
+        <View style={styles.row}>
+          <View style={[styles.field, styles.halfField]}>
+            <Text style={styles.fieldLabel}>Año</Text>
+            <TextInput
+              style={styles.input}
+              value={year}
+              onChangeText={setYear}
+              placeholder="Ej: 1872"
+              placeholderTextColor={COLORS.textMuted}
+              keyboardType="numeric"
+              returnKeyType="next"
+            />
+          </View>
+          <View style={[styles.field, styles.halfField]}>
+            <Text style={styles.fieldLabel}>Período</Text>
+            <TextInput
+              style={styles.input}
+              value={period}
+              onChangeText={setPeriod}
+              placeholder="Ej: Impresionismo"
+              placeholderTextColor={COLORS.textMuted}
+              returnKeyType="next"
+            />
+          </View>
+        </View>
+
+        {/* Sala del Museo */}
+        <View style={styles.field}>
+          <Text style={styles.fieldLabel}>Sala de Exhibición</Text>
+          <TextInput
+            style={styles.input}
+            value={room}
+            onChangeText={setRoom}
+            placeholder="Ej: Sala 4 - Pintura Francesa"
+            placeholderTextColor={COLORS.textMuted}
+            returnKeyType="next"
+          />
+        </View>
+
+        {/* Técnica */}
+        <View style={styles.field}>
+          <Text style={styles.fieldLabel}>Técnica</Text>
+          <TextInput
+            style={styles.input}
+            value={technique}
+            onChangeText={setTechnique}
+            placeholder="Ej: Óleo sobre lienzo"
+            placeholderTextColor={COLORS.textMuted}
+            returnKeyType="next"
+          />
+        </View>
+
+        {/* Descripción Histórica */}
+        <View style={styles.field}>
+          <Text style={styles.fieldLabel}>Descripción Histórica</Text>
           <TextInput
             style={[styles.input, styles.multiline]}
-            value={body}
-            onChangeText={setBody}
-            placeholder="Descripción opcional…"
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Describe los detalles, origen e importancia de la obra..."
             placeholderTextColor={COLORS.textMuted}
             multiline
             numberOfLines={4}
@@ -110,7 +185,7 @@ export function CreateScreen(): React.JSX.Element {
           />
         </View>
 
-        {/* Botón de envío */}
+        {/* Botón Guardar */}
         <Pressable
           style={[styles.button, !canSubmit && styles.buttonDisabled]}
           onPress={handleSubmit}
@@ -119,11 +194,11 @@ export function CreateScreen(): React.JSX.Element {
           {isPending ? (
             <ActivityIndicator size="small" color={COLORS.background} />
           ) : (
-            <Text style={styles.buttonText}>Crear ítem</Text>
+            <Text style={styles.buttonText}>Registrar Obra en la Colección</Text>
           )}
         </Pressable>
 
-        {/* Botón cancelar */}
+        {/* Botón Cancelar */}
         <Pressable style={styles.cancel} onPress={() => navigation.goBack()}>
           <Text style={styles.cancelText}>Cancelar</Text>
         </Pressable>
@@ -135,34 +210,87 @@ export function CreateScreen(): React.JSX.Element {
 // ============================================================
 // ESTILOS
 // ============================================================
-
 const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: COLORS.background },
-  container: { flex: 1 },
-  content: { padding: SPACING.lg, gap: SPACING.md, paddingBottom: SPACING.xxl },
-  sectionLabel: { ...TYPOGRAPHY.label, textTransform: 'uppercase', letterSpacing: 0.8 },
-  field: { gap: SPACING.xs },
-  fieldLabel: { ...TYPOGRAPHY.body, fontWeight: '600' },
-  required: { color: COLORS.error },
+  flex: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  container: {
+    flex: 1,
+  },
+  content: {
+    padding: SPACING.lg,
+    gap: SPACING.md,
+    paddingBottom: SPACING.xxl,
+  },
+  headerInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: SPACING.xs,
+  },
+  sectionLabel: {
+    ...TYPOGRAPHY.label,
+    fontSize: 13,
+    color: COLORS.accent,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  field: {
+    gap: SPACING.xs,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: SPACING.md,
+  },
+  halfField: {
+    flex: 1,
+  },
+  fieldLabel: {
+    ...TYPOGRAPHY.body,
+    fontSize: 14,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+  },
+  required: {
+    color: COLORS.error,
+  },
   input: {
     backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
-    padding: SPACING.sm,
+    borderRadius: RADIUS.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     ...TYPOGRAPHY.body,
-    color: COLORS.text,
+    fontSize: 14,
+    color: COLORS.textPrimary,
   },
-  multiline: { minHeight: 96, paddingTop: SPACING.sm },
+  multiline: {
+    minHeight: 90,
+    paddingTop: SPACING.sm,
+  },
   button: {
     backgroundColor: COLORS.accent,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     padding: SPACING.md,
     alignItems: 'center',
     marginTop: SPACING.sm,
   },
-  buttonDisabled: { opacity: 0.45 },
-  buttonText: { ...TYPOGRAPHY.body, fontWeight: '700', color: COLORS.background },
-  cancel: { alignItems: 'center', padding: SPACING.sm },
-  cancelText: { ...TYPOGRAPHY.body, color: COLORS.textMuted },
+  buttonDisabled: {
+    opacity: 0.45,
+  },
+  buttonText: {
+    ...TYPOGRAPHY.body,
+    fontWeight: '700',
+    color: COLORS.background,
+  },
+  cancel: {
+    alignItems: 'center',
+    padding: SPACING.sm,
+  },
+  cancelText: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.textMuted,
+  },
 });
