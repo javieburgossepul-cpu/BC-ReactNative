@@ -56,6 +56,9 @@ La aplicación cuenta con navegación mediante Stack Navigator y un formulario m
 ### 1. Pantalla Galería (Inicio - HomeScreen)
 Muestra el catálogo de obras de arte en tarjetas con el nombre de la obra, el artista, el año, la sala y el periodo artístico. Cuenta con un contador dinámico de obras, opción de deslizar para actualizar y un botón `+` en la parte superior para registrar una nueva obra. Al pulsar cualquier tarjeta se navega al detalle.
 
+<img src="./0-assets/cap1.jpeg" alt="Registro de Obra" width="300">
+
+
 ### 2. Pantalla de Detalle de la Obra (DetailScreen)
 Muestra toda la ficha técnica de la obra seleccionada:
 * Nombre, artista y año de creación.
@@ -63,12 +66,17 @@ Muestra toda la ficha técnica de la obra seleccionada:
 * Sección con la **Descripción Histórica** detallada de la obra.
 * Botón interactivo para volver a la galería.
 
+<img src="./0-assets/cap2.jpeg" alt="Registro de Obra" width="300">
+
+
 ### 3. Pantalla de Registro de Obra (CreateScreen)
 Un formulario modal que permite agregar una nueva obra a la colección:
 * Campos para ingresar el nombre, autor, año, período, sala, técnica y descripción.
 * Validación para no enviar campos vacíos.
 * Botón de guardado con indicador de carga mientras se envía a la red.
 * Cierre automático y actualización inmediata de la galería al guardar.
+
+<img src="./0-assets/cap3.jpeg" alt="Registro de Obra" width="300">
 
 ---
 
